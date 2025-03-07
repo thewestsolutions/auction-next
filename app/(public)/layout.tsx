@@ -3,9 +3,16 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { FacebookIcon, Instagram } from "lucide-react";
+import { FacebookIcon, Instagram, User } from "lucide-react";
 import { getServerSession } from "next-auth/next";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession();
   const isLoggedIn = !!session?.user;
@@ -29,15 +36,30 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
             {isLoggedIn ? (
               <>
-                <Link href="/my-bids" className="hover:text-primary text-sm font-medium">
-                  My Bids
-                </Link>
-                <Link href="/my-wins" className="hover:text-primary text-sm font-medium">
-                  My Wins
-                </Link>
-                <Link href="/wishlist" className="hover:text-primary text-sm font-medium">
-                  Wishlist
-                </Link>
+                <div className="flex items-center gap-4 whitespace-nowrap">
+                  <Link href="/my-bids" className="hover:text-primary text-sm font-medium">
+                    My Bids
+                  </Link>
+                  <Link href="/my-wins" className="hover:text-primary text-sm font-medium">
+                    My Wins
+                  </Link>
+                  <Link href="/wishlist" className="hover:text-primary text-sm font-medium">
+                    Wishlist
+                  </Link>
+                </div>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="cursor-pointer">
+                    <User size={20} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Billing</DropdownMenuItem>
+                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             ) : (
               <>
