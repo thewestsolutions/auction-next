@@ -22,7 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Button className="h-10">Login</Button>
+            <Button className="h-10" asChild>
+              <Link href="/login">Login</Link>
+            </Button>
           </div>
         </header>
 
@@ -76,9 +78,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <main className="flex-grow px-8 py-4">{children}</main>
 
-      <footer className="border-border border-t px-8 py-12">
+      <footer className="border-border border-t py-12">
         <div className="container">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 px-8 md:grid-cols-3">
             {/* Information Column */}
             <div>
               <h3 className="mb-4 text-lg font-medium">Information</h3>
@@ -228,28 +230,35 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* Newsletter Section */}
           <div className="border-border mt-12 border-t pt-8">
-            <h3 className="mb-2 text-lg font-medium">Subscribe to our newsletter</h3>
-            <p className="text-muted-foreground mb-4">
-              The latest news, articles, and resources, sent to your inbox weekly.
-            </p>
-            <div className="flex max-w-md gap-2">
-              <Input placeholder="Enter your email" className="h-10" />
-              <Button className="h-10">Subscribe</Button>
+            <div className="px-8">
+              <h3 className="mb-2 text-lg font-medium">Subscribe to our newsletter</h3>
+              <p className="text-muted-foreground mb-4">
+                The latest news, articles, and resources, sent to your inbox weekly.
+              </p>
+              <div className="flex max-w-md gap-2">
+                <Input placeholder="Enter your email" className="h-10" />
+                <Button className="h-10">Subscribe</Button>
+              </div>
             </div>
           </div>
 
           {/* Copyright and Social */}
-          <div className="border-border mt-12 flex flex-col items-center justify-between border-t pt-8 md:flex-row">
-            <p className="text-muted-foreground text-sm">
-              © 2025 Prime Auctions LLC. All rights reserved.
-            </p>
-            <div className="mt-4 flex gap-4 md:mt-0">
-              <a href="https://facebook.com" className="text-muted-foreground hover:text-primary">
-                <FacebookIcon size={20} />
-              </a>
-              <a href="https://instagram.com" className="text-muted-foreground hover:text-primary">
-                <Instagram size={20} />
-              </a>
+          <div className="border-border mt-12 border-t pt-12">
+            <div className="flex flex-col items-center justify-between px-8 md:flex-row">
+              <p className="text-muted-foreground text-sm">
+                © 2025 Prime Auctions LLC. All rights reserved.
+              </p>
+              <div className="mt-4 flex gap-4 md:mt-0">
+                <a href="https://facebook.com" className="text-muted-foreground hover:text-primary">
+                  <FacebookIcon size={20} />
+                </a>
+                <a
+                  href="https://instagram.com"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  <Instagram size={20} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
