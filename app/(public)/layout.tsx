@@ -76,7 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </nav>
       </div>
 
-      <main className="flex-grow px-8 py-4">{children}</main>
+      <main className="z-0 flex-grow px-8 py-4">{children}</main>
 
       <footer className="border-border border-t py-12">
         <div className="container">
