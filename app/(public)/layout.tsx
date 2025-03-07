@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 
 export default function RootLayout({
@@ -7,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-white sticky top-0 z-10 w-full px-4 py-2">
+      <header className="bg-white sticky top-0 z-10 w-full px-4 py-2 flex justify-between items-center gap-4">
         <Image
           src="https://placehold.co/300x150.png"
           alt="logo"
@@ -15,6 +17,10 @@ export default function RootLayout({
           width={150}
           height={300}
         />
+
+        <Input placeholder="Search" />
+
+        <Button>Login</Button>
       </header>
 
       <main className="flex-grow p-4">{children}</main>
