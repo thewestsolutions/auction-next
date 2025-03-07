@@ -4,8 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { FacebookIcon, Instagram } from "lucide-react";
+import { getServerSession } from "next-auth/next";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession();
+  const isLoggedIn = !!session?.user;
+
   return (
     <div className="flex min-h-screen flex-col">
       <div className="bg-background sticky top-0 z-10">
@@ -20,11 +24,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <Input placeholder="Search" className="h-10" />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <ThemeToggle />
-            <Button className="h-10" asChild>
-              <Link href="/auth/login">Login</Link>
-            </Button>
+
+            {isLoggedIn ? (
+              <>
+                <Link href="/my-bids" className="hover:text-primary text-sm font-medium">
+                  My Bids
+                </Link>
+                <Link href="/my-wins" className="hover:text-primary text-sm font-medium">
+                  My Wins
+                </Link>
+                <Link href="/wishlist" className="hover:text-primary text-sm font-medium">
+                  Wishlist
+                </Link>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" className="h-10" asChild>
+                  <Link href="/auth/register">Sign up</Link>
+                </Button>
+                <Button className="h-10" asChild>
+                  <Link href="/auth/login">Sign in</Link>
+                </Button>
+              </>
+            )}
           </div>
         </header>
 

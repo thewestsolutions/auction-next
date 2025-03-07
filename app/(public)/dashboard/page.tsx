@@ -9,9 +9,9 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container py-10">
       <h1 className="mb-6 text-3xl font-bold">Dashboard</h1>
-      <div className="rounded-lg bg-white p-6 shadow-md">
+      <div className="rounded-lg py-6 shadow-md">
         <h2 className="mb-4 text-xl font-semibold">Welcome, {user.name || "User"}!</h2>
         <p className="text-gray-600">You are now logged in to your account.</p>
       </div>
