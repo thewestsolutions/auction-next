@@ -22,7 +22,6 @@ export interface Item {
   discountPercentage: number;
   location: string;
   timeLeft: string;
-  isWishlisted: boolean;
   categoryId?: string;
 }
 
@@ -146,7 +145,6 @@ class Database {
         discountPercentage,
         location: `${neighborhood}, ${city}`,
         timeLeft: `${timeValue}${timeUnit} ${timeExtra}`,
-        isWishlisted: Math.random() > 0.7,
       };
     });
   }

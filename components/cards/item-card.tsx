@@ -3,8 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Clock, Heart, MapPin, Tag } from "lucide-react";
-import { useState } from "react";
+import { Clock, MapPin, Tag } from "lucide-react";
 import Link from "next/link";
 
 interface ItemCardProps {
@@ -16,8 +15,6 @@ interface ItemCardProps {
   discountPercentage: number;
   location: string;
   timeLeft: string;
-  onWishlistToggle?: (id: string) => void;
-  isWishlisted?: boolean;
 }
 
 export default function ItemCard({
@@ -29,18 +26,7 @@ export default function ItemCard({
   discountPercentage,
   location,
   timeLeft,
-  onWishlistToggle,
-  isWishlisted = false,
 }: ItemCardProps) {
-  const [isInWishlist, setIsInWishlist] = useState(isWishlisted);
-
-  const handleWishlistToggle = () => {
-    setIsInWishlist(!isInWishlist);
-    if (onWishlistToggle) {
-      onWishlistToggle(id);
-    }
-  };
-
   return (
     <Card className="flex h-full flex-col gap-0 overflow-hidden py-0">
       <CardHeader className="p-0">
@@ -53,19 +39,6 @@ export default function ItemCard({
                 {timeLeft}
               </span>
             </div>
-
-            {/* Wishlist button */}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleWishlistToggle();
-              }}
-              className="absolute top-3 right-3 z-10 rounded-full bg-white p-2 shadow-md transition-colors hover:bg-gray-100"
-              aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-            >
-              <Heart size={24} className={isInWishlist ? "fill-black text-black" : "text-black"} />
-            </button>
 
             {/* Item image */}
             <div className="relative h-64 w-full">

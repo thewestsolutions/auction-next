@@ -19,7 +19,6 @@ export default function ItemsPage() {
             discountPercentage={item.discountPercentage}
             location={item.location}
             timeLeft={item.timeLeft}
-            isWishlisted={item.isWishlisted}
           />
         ))}
       </div>
