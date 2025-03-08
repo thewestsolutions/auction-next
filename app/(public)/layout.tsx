@@ -2,20 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { FacebookIcon, Instagram, User } from "lucide-react";
-import { getServerSession } from "next-auth/next";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession();
-  const isLoggedIn = !!session?.user;
+import { FacebookIcon, Instagram } from "lucide-react";
+import { HeaderActions } from "./header-actions";
+import { getSession } from "@/lib/auth";
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const session = await getSession();
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -31,47 +22,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <Input placeholder="Search" className="h-10" />
 
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-
-            {isLoggedIn ? (
-              <>
-                <div className="flex items-center gap-4 whitespace-nowrap">
-                  <Link href="/my-bids" className="hover:text-primary text-sm font-medium">
-                    My Bids
-                  </Link>
-                  <Link href="/my-wins" className="hover:text-primary text-sm font-medium">
-                    My Wins
-                  </Link>
-                  <Link href="/wishlist" className="hover:text-primary text-sm font-medium">
-                    Wishlist
-                  </Link>
-                </div>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="cursor-pointer">
-                    <User size={20} />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
-                    <DropdownMenuItem>Logout</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : (
-              <>
-                <Button variant="outline" className="h-10" asChild>
-                  <Link href="/auth/register">Sign up</Link>
-                </Button>
-                <Button className="h-10" asChild>
-                  <Link href="/auth/login">Sign in</Link>
-                </Button>
-              </>
-            )}
-          </div>
+          <HeaderActions isLoggedIn={!!session?.user} />
         </header>
 
         <nav className="border-border border-b px-8">
