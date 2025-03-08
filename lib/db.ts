@@ -116,7 +116,7 @@ class Database {
       "Heights",
     ];
 
-    const timeUnits = ["m", "h", "d"];
+    const timeUnits = ["m", "h"];
 
     return Array.from({ length: count }, (_, i) => {
       const category = categories[Math.floor(Math.random() * categories.length)];
@@ -132,9 +132,7 @@ class Database {
       const timeExtra =
         timeUnit === "m"
           ? `${Math.floor(Math.random() * 59)}s`
-          : timeUnit === "h"
-            ? `${Math.floor(Math.random() * 59)}m`
-            : `${Math.floor(Math.random() * 23)}h`;
+          : `${Math.floor(Math.random() * 59)}m`;
 
       return {
         id: (i + 1).toString(),
