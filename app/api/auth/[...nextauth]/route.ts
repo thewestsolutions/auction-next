@@ -1,13 +1,14 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
+import bcrypt from "bcrypt";
+import db from "@/lib/db";
 
 // Define custom types for our auth
 interface User {
   id: string;
   name?: string;
   email?: string;
-  accessToken?: string;
 }
 
 declare module "next-auth" {
@@ -19,7 +20,6 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
-    accessToken?: string;
   }
 }
 
@@ -36,25 +36,29 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        console.log("credentials", credentials);
+
         try {
-          // This is a placeholder for your API call
-          // Replace with actual API endpoint when ready
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-          });
+          // Find user in our database
+          const user = db.findUserByEmail(credentials.email);
 
-          const user = await response.json();
-
-          if (!response.ok) {
+          // If user doesn't exist
+          if (!user) {
             return null;
           }
 
-          return user as User;
+          // Verify password
+          const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          // Return user without password
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          };
         } catch (error) {
           console.error("Authentication error:", error);
           return null;
@@ -75,14 +79,12 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.accessToken = (user as User).accessToken;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
-        session.user.accessToken = token.accessToken;
       }
       return session;
     },

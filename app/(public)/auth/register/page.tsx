@@ -43,8 +43,8 @@ export default function RegisterPage() {
     try {
       setLoading(true);
 
-      // Register the user
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
+      // Register the user using our Next.js API route
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
