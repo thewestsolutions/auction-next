@@ -42,7 +42,7 @@ export default function ItemCard({
   };
 
   return (
-    <Card className="gap-0 overflow-hidden py-0">
+    <Card className="flex h-full flex-col gap-0 overflow-hidden py-0">
       <CardHeader className="p-0">
         <Link href={`/items/${id}`}>
           <div className="relative">
@@ -81,7 +81,7 @@ export default function ItemCard({
         </Link>
       </CardHeader>
 
-      <CardContent className="p-4">
+      <CardContent className="flex-grow p-4">
         <Link href={`/items/${id}`} className="block">
           <h3 className="mb-1 line-clamp-2 text-lg font-semibold">{title}</h3>
         </Link>
@@ -93,7 +93,7 @@ export default function ItemCard({
           </span>
         </div>
 
-        <div className="mb-3 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <span className="flex items-center gap-1 text-sm text-gray-500">
             <Tag size={16} />
             Retail ${retailPrice.toFixed(2)} ({discountPercentage}% off)
@@ -101,7 +101,7 @@ export default function ItemCard({
         </div>
       </CardContent>
 
-      <CardFooter className="px-4 pt-0 pb-4">
+      <CardFooter className="mt-auto px-4 pt-0 pb-4">
         <Button className="w-full bg-amber-500 hover:bg-amber-600">Bid ${price.toFixed(2)}</Button>
       </CardFooter>
     </Card>
