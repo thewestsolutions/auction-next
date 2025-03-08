@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import ItemCard from "@/components/cards/item-card";
 
 // Fake data generator function
@@ -79,28 +76,7 @@ const generateFakeItems = (count = 20) => {
 };
 
 export default function ItemsPage() {
-  const [items, setItems] = useState<
-    Array<{
-      id: string;
-      title: string;
-      imageUrl: string;
-      price: number;
-      retailPrice: number;
-      discountPercentage: number;
-      location: string;
-      timeLeft: string;
-      isWishlisted: boolean;
-    }>
-  >([]);
-
-  useEffect(() => {
-    // Generate fake data on client side
-    setItems(generateFakeItems());
-  }, []);
-
-  const handleWishlistToggle = (id: string) => {
-    console.log(`Toggled wishlist for item ${id}`);
-  };
+  const items = generateFakeItems();
 
   return (
     <div className="container">
@@ -118,7 +94,6 @@ export default function ItemsPage() {
             location={item.location}
             timeLeft={item.timeLeft}
             isWishlisted={item.isWishlisted}
-            onWishlistToggle={handleWishlistToggle}
           />
         ))}
       </div>
