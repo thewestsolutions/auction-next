@@ -16,9 +16,9 @@ export default function ItemsLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="flex">
+    <div className="flex gap-12">
       {/* Sidebar */}
-      <div className={`bg-background min-h-screen w-64 py-4 dark:text-white`}>
+      <div className={`bg-background min-h-screen w-64 dark:text-white`}>
         <h2 className="mb-4 flex items-center justify-between text-xl font-bold">
           Staff Picks
           <span className={`text-sm font-normal text-blue-600 dark:text-blue-400`}>View All</span>
@@ -41,7 +41,7 @@ export default function ItemsLayout({ children }: { children: React.ReactNode })
       </div>
 
       {/* Main content */}
-      <div className="flex-1 p-4">{children}</div>
+      <div className="flex-1">{children}</div>
     </div>
   );
 }

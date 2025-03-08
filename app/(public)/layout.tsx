@@ -34,12 +34,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
               View All
             </Link>
             <Link
-              href="/staff-picks"
-              className="text-muted-foreground hover:text-primary py-4 text-sm font-medium"
-            >
-              Staff Picks
-            </Link>
-            <Link
               href="/top-deals"
               className="text-muted-foreground hover:text-primary py-4 text-sm font-medium"
             >
