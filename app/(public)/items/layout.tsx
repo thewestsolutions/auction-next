@@ -1,19 +1,7 @@
+import db from "@/lib/db";
+
 export default function ItemsLayout({ children }: { children: React.ReactNode }) {
-  const categories = [
-    { icon: "🐾", name: "Pet Supplies" },
-    { icon: "🏠", name: "Home & Kitchen" },
-    { icon: "🔌", name: "Electronics & Gadgets" },
-    { icon: "👶", name: "Baby Products" },
-    { icon: "🌿", name: "Patio, Lawn & Garden" },
-    { icon: "💄", name: "Beauty & Personal Care" },
-    { icon: "🔧", name: "Tools & Home Improvement" },
-    { icon: "🎮", name: "Toys & Games" },
-    { icon: "🏀", name: "Sports & Outdoors" },
-    { icon: "🏥", name: "Health & Household" },
-    { icon: "👕", name: "Clothing, Shoes & Jewellery" },
-    { icon: "📎", name: "Office Products" },
-    { icon: "📱", name: "Cell Phones & Accessories" },
-  ];
+  const categories = db.getAllCategories();
 
   return (
     <div className="flex gap-12">

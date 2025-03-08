@@ -8,6 +8,11 @@ export interface User {
   password: string;
 }
 
+export interface Category {
+  icon: string;
+  name: string;
+}
+
 // Our mock database
 class Database {
   private users: User[] = [
@@ -17,6 +22,22 @@ class Database {
       email: "john@doe.com",
       password: bcrypt.hashSync("password123", 10),
     },
+  ];
+
+  private categories: Category[] = [
+    { icon: "🐾", name: "Pet Supplies" },
+    { icon: "🏠", name: "Home & Kitchen" },
+    { icon: "🔌", name: "Electronics & Gadgets" },
+    { icon: "👶", name: "Baby Products" },
+    { icon: "🌿", name: "Patio, Lawn & Garden" },
+    { icon: "💄", name: "Beauty & Personal Care" },
+    { icon: "🔧", name: "Tools & Home Improvement" },
+    { icon: "🎮", name: "Toys & Games" },
+    { icon: "🏀", name: "Sports & Outdoors" },
+    { icon: "🏥", name: "Health & Household" },
+    { icon: "👕", name: "Clothing, Shoes & Jewellery" },
+    { icon: "📎", name: "Office Products" },
+    { icon: "📱", name: "Cell Phones & Accessories" },
   ];
 
   constructor() {
@@ -42,6 +63,11 @@ class Database {
 
   getAllUsers(): User[] {
     return [...this.users];
+  }
+
+  // Category methods
+  getAllCategories(): Category[] {
+    return [...this.categories];
   }
 }
 
