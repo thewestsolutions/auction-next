@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FacebookIcon, Instagram } from "lucide-react";
 import { HeaderActions } from "./header-actions";
 import { getSession } from "@/lib/auth";
+
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
 
