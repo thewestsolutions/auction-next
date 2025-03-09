@@ -2,6 +2,7 @@
 // In a real application, you would use a proper database like MongoDB, PostgreSQL, etc.
 import bcrypt from "bcrypt";
 import itemsData from "./data/items.json";
+import categoriesData from "./data/categories.json";
 
 export interface User {
   id: string;
@@ -38,22 +39,7 @@ class Database {
     },
   ];
 
-  private categories: Category[] = [
-    { icon: "🐾", name: "Pet Supplies" },
-    { icon: "🏠", name: "Home & Kitchen" },
-    { icon: "🔌", name: "Electronics & Gadgets" },
-    { icon: "👶", name: "Baby Products" },
-    { icon: "🌿", name: "Patio, Lawn & Garden" },
-    { icon: "💄", name: "Beauty & Personal Care" },
-    { icon: "🔧", name: "Tools & Home Improvement" },
-    { icon: "🎮", name: "Toys & Games" },
-    { icon: "🏀", name: "Sports & Outdoors" },
-    { icon: "🏥", name: "Health & Household" },
-    { icon: "👕", name: "Clothing, Shoes & Jewellery" },
-    { icon: "📎", name: "Office Products" },
-    { icon: "📱", name: "Cell Phones & Accessories" },
-  ];
-
+  private categories: Category[] = categoriesData;
   private items: Item[] = itemsData;
 
   constructor() {

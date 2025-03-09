@@ -37,8 +37,6 @@ app.prepare().then(() => {
 
     // Handle bid events
     socket.on("place_bid", (bidData: { itemId: string; price: number; timestamp: number }) => {
-      console.log("bid received:", bidData);
-
       const { itemId, price, timestamp } = bidData;
       const currentBid = itemBids.get(itemId);
 
