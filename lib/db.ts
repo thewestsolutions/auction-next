@@ -1,8 +1,10 @@
 // This is a simple in-memory database for demonstration purposes
 // In a real application, you would use a proper database like MongoDB, PostgreSQL, etc.
-import bcrypt from "bcrypt";
+import fs from "fs";
+import path from "path";
 import itemsData from "./data/items.json";
 import categoriesData from "./data/categories.json";
+import usersData from "./data/users.json";
 
 export interface User {
   id: string;
@@ -30,15 +32,7 @@ export interface Item {
 
 // Our mock database
 class Database {
-  private users: User[] = [
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john@doe.com",
-      password: bcrypt.hashSync("password123", 10),
-    },
-  ];
-
+  private users: User[] = usersData;
   private categories: Category[] = categoriesData;
   private items: Item[] = itemsData;
 
@@ -59,7 +53,18 @@ class Database {
   }
 
   createUser(user: User): User {
+    // Add user to in-memory array
     this.users.push(user);
+
+    // Also update the JSON file to persist the data
+    try {
+      const filePath = path.join(process.cwd(), "lib/data/users.json");
+      fs.writeFileSync(filePath, JSON.stringify(this.users, null, 2));
+    } catch (error) {
+      console.error("Error writing to users.json:", error);
+      // In a real app, you might want to handle this error differently
+    }
+
     return user;
   }
 

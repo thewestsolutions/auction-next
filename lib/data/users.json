@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "John Doe",
+    "email": "john@doe.com",
+    "password": "$2b$10$FGEQpHmTNk0y.TqCr9Rwr.BbeiSA2aIKRdFPvE/RGQdYxt0uWJTuS"
+  },
+  {
+    "id": "2",
+    "name": "Jane Smith",
+    "email": "jane@smith.com",
+    "password": "$2b$10$FGEQpHmTNk0y.TqCr9Rwr.BbeiSA2aIKRdFPvE/RGQdYxt0uWJTuS"
+  },
+  {
+    "id": "3",
+    "name": "Alex Johnson",
+    "email": "alex@johnson.com",
+    "password": "$2b$10$FGEQpHmTNk0y.TqCr9Rwr.BbeiSA2aIKRdFPvE/RGQdYxt0uWJTuS"
+  },
+  {
+    "id": "1741540398090",
+    "name": "Lex Kito",
+    "email": "lex@kito.com",
+    "password": "$2b$10$Szeg5rsW.0/Fm/yPZ.gMp.l7.eHfn3ut38849QUinnAodGk.MnovC"
+  }
+]

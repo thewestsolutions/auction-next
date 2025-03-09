@@ -36,8 +36,6 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        console.log("credentials", credentials);
-
         try {
           // Find user in our database
           const user = db.findUserByEmail(credentials.email);
