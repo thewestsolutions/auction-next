@@ -1,7 +1,9 @@
+import { SocketExample } from "@/components/SocketExample";
+
 export default function HomePage() {
   return (
     <div>
-      <h1>Home</h1>
+      <SocketExample />
     </div>
   );
 }
