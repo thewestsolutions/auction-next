@@ -1,6 +1,8 @@
 // This is a simple in-memory database for demonstration purposes
 // In a real application, you would use a proper database like MongoDB, PostgreSQL, etc.
 import bcrypt from "bcrypt";
+import itemsData from "./data/items.json";
+
 export interface User {
   id: string;
   name: string;
@@ -52,6 +54,8 @@ class Database {
     { icon: "📱", name: "Cell Phones & Accessories" },
   ];
 
+  private items: Item[] = itemsData;
+
   constructor() {
     // Add a test user in development
     if (process.env.NODE_ENV === "development") {
@@ -84,67 +88,8 @@ class Database {
 
   // Item methods
   getItems(count = 20): Item[] {
-    return this.generateFakeItems(count);
-  }
-
-  private generateFakeItems(count = 20): Item[] {
-    const categories = this.categories.map((c) => c.name);
-
-    const cities = [
-      "Sacramento",
-      "San Francisco",
-      "Los Angeles",
-      "San Diego",
-      "Oakland",
-      "San Jose",
-      "Fresno",
-      "Long Beach",
-      "Bakersfield",
-      "Anaheim",
-    ];
-
-    const neighborhoods = [
-      "Downtown",
-      "Midtown",
-      "West Side",
-      "East Side",
-      "North End",
-      "South Bay",
-      "Mission District",
-      "Commerce Circle",
-      "Marina",
-      "Heights",
-    ];
-
-    const timeUnits = ["m", "h"];
-
-    return Array.from({ length: count }, (_, i) => {
-      const category = categories[Math.floor(Math.random() * categories.length)];
-      const city = cities[Math.floor(Math.random() * cities.length)];
-      const neighborhood = neighborhoods[Math.floor(Math.random() * neighborhoods.length)];
-
-      const retailPrice = Math.floor(Math.random() * 900) + 100;
-      const discountPercentage = Math.floor(Math.random() * 70) + 30;
-      const price = Math.round((retailPrice * (100 - discountPercentage)) / 100);
-
-      const timeValue = Math.floor(Math.random() * 59) + 1;
-      const timeUnit = timeUnits[Math.floor(Math.random() * timeUnits.length)];
-      const timeExtra =
-        timeUnit === "m"
-          ? `${Math.floor(Math.random() * 59)}s`
-          : `${Math.floor(Math.random() * 59)}m`;
-
-      return {
-        id: (i + 1).toString(),
-        title: `${["New", "Premium", "Deluxe", "Limited Edition"][Math.floor(Math.random() * 4)]} ${category} Item ${i + 1}`,
-        imageUrl: `https://placehold.co/300x300.png?text=Item+${i + 1}`,
-        price,
-        retailPrice,
-        discountPercentage,
-        location: `${neighborhood}, ${city}`,
-        timeLeft: `${timeValue}${timeUnit} ${timeExtra}`,
-      };
-    });
+    // Return all items or limit by count if specified
+    return count ? this.items.slice(0, count) : [...this.items];
   }
 }
 

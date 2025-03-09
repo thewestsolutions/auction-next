@@ -1,0 +1,222 @@
+[
+  {
+    "id": "1",
+    "title": "Premium Pet Supplies Bundle",
+    "imageUrl": "https://placehold.co/300x300.png?text=Pet+Bundle",
+    "price": 49,
+    "retailPrice": 99,
+    "discountPercentage": 50,
+    "location": "Downtown, San Francisco",
+    "timeLeft": "2h 45m",
+    "categoryId": "Pet Supplies"
+  },
+  {
+    "id": "2",
+    "title": "Smart Home Kitchen Set",
+    "imageUrl": "https://placehold.co/300x300.png?text=Kitchen+Set",
+    "price": 129,
+    "retailPrice": 299,
+    "discountPercentage": 57,
+    "location": "Marina, San Diego",
+    "timeLeft": "1h 30m",
+    "categoryId": "Home & Kitchen"
+  },
+  {
+    "id": "3",
+    "title": "Wireless Noise-Cancelling Headphones",
+    "imageUrl": "https://placehold.co/300x300.png?text=Headphones",
+    "price": 89,
+    "retailPrice": 199,
+    "discountPercentage": 55,
+    "location": "Midtown, Los Angeles",
+    "timeLeft": "45m 20s",
+    "categoryId": "Electronics & Gadgets"
+  },
+  {
+    "id": "4",
+    "title": "Organic Baby Care Package",
+    "imageUrl": "https://placehold.co/300x300.png?text=Baby+Care",
+    "price": 39,
+    "retailPrice": 79,
+    "discountPercentage": 51,
+    "location": "Heights, Oakland",
+    "timeLeft": "3h 15m",
+    "categoryId": "Baby Products"
+  },
+  {
+    "id": "5",
+    "title": "Deluxe Garden Tool Set",
+    "imageUrl": "https://placehold.co/300x300.png?text=Garden+Tools",
+    "price": 65,
+    "retailPrice": 130,
+    "discountPercentage": 50,
+    "location": "South Bay, San Jose",
+    "timeLeft": "5h 10m",
+    "categoryId": "Patio, Lawn & Garden"
+  },
+  {
+    "id": "6",
+    "title": "Limited Edition Skincare Collection",
+    "imageUrl": "https://placehold.co/300x300.png?text=Skincare",
+    "price": 75,
+    "retailPrice": 150,
+    "discountPercentage": 50,
+    "location": "West Side, Sacramento",
+    "timeLeft": "1h 55m",
+    "categoryId": "Beauty & Personal Care"
+  },
+  {
+    "id": "7",
+    "title": "Professional Power Tool Kit",
+    "imageUrl": "https://placehold.co/300x300.png?text=Power+Tools",
+    "price": 149,
+    "retailPrice": 299,
+    "discountPercentage": 50,
+    "location": "East Side, Fresno",
+    "timeLeft": "4h 30m",
+    "categoryId": "Tools & Home Improvement"
+  },
+  {
+    "id": "8",
+    "title": "Interactive Board Game Collection",
+    "imageUrl": "https://placehold.co/300x300.png?text=Board+Games",
+    "price": 59,
+    "retailPrice": 119,
+    "discountPercentage": 50,
+    "location": "North End, Long Beach",
+    "timeLeft": "2h 20m",
+    "categoryId": "Toys & Games"
+  },
+  {
+    "id": "9",
+    "title": "Premium Fitness Equipment Set",
+    "imageUrl": "https://placehold.co/300x300.png?text=Fitness",
+    "price": 199,
+    "retailPrice": 399,
+    "discountPercentage": 50,
+    "location": "Commerce Circle, Bakersfield",
+    "timeLeft": "6h 40m",
+    "categoryId": "Sports & Outdoors"
+  },
+  {
+    "id": "10",
+    "title": "Wellness and Health Supplement Bundle",
+    "imageUrl": "https://placehold.co/300x300.png?text=Supplements",
+    "price": 45,
+    "retailPrice": 90,
+    "discountPercentage": 50,
+    "location": "Mission District, Anaheim",
+    "timeLeft": "3h 25m",
+    "categoryId": "Health & Household"
+  },
+  {
+    "id": "11",
+    "title": "Designer Clothing Collection",
+    "imageUrl": "https://placehold.co/300x300.png?text=Clothing",
+    "price": 179,
+    "retailPrice": 359,
+    "discountPercentage": 50,
+    "location": "Downtown, San Francisco",
+    "timeLeft": "1h 15m",
+    "categoryId": "Clothing, Shoes & Jewellery"
+  },
+  {
+    "id": "12",
+    "title": "Ergonomic Office Chair",
+    "imageUrl": "https://placehold.co/300x300.png?text=Office+Chair",
+    "price": 159,
+    "retailPrice": 319,
+    "discountPercentage": 50,
+    "location": "Midtown, Los Angeles",
+    "timeLeft": "5h 50m",
+    "categoryId": "Office Products"
+  },
+  {
+    "id": "13",
+    "title": "Latest Smartphone with Accessories",
+    "imageUrl": "https://placehold.co/300x300.png?text=Smartphone",
+    "price": 399,
+    "retailPrice": 799,
+    "discountPercentage": 50,
+    "location": "Marina, San Diego",
+    "timeLeft": "2h 35m",
+    "categoryId": "Cell Phones & Accessories"
+  },
+  {
+    "id": "14",
+    "title": "Luxury Pet Bed",
+    "imageUrl": "https://placehold.co/300x300.png?text=Pet+Bed",
+    "price": 69,
+    "retailPrice": 139,
+    "discountPercentage": 50,
+    "location": "Heights, Oakland",
+    "timeLeft": "4h 15m",
+    "categoryId": "Pet Supplies"
+  },
+  {
+    "id": "15",
+    "title": "Smart Kitchen Appliance Set",
+    "imageUrl": "https://placehold.co/300x300.png?text=Kitchen+Appliances",
+    "price": 249,
+    "retailPrice": 499,
+    "discountPercentage": 50,
+    "location": "South Bay, San Jose",
+    "timeLeft": "3h 40m",
+    "categoryId": "Home & Kitchen"
+  },
+  {
+    "id": "16",
+    "title": "Premium Gaming Laptop",
+    "imageUrl": "https://placehold.co/300x300.png?text=Gaming+Laptop",
+    "price": 899,
+    "retailPrice": 1799,
+    "discountPercentage": 50,
+    "location": "West Side, Sacramento",
+    "timeLeft": "7h 20m",
+    "categoryId": "Electronics & Gadgets"
+  },
+  {
+    "id": "17",
+    "title": "Organic Baby Food Collection",
+    "imageUrl": "https://placehold.co/300x300.png?text=Baby+Food",
+    "price": 35,
+    "retailPrice": 70,
+    "discountPercentage": 50,
+    "location": "East Side, Fresno",
+    "timeLeft": "1h 50m",
+    "categoryId": "Baby Products"
+  },
+  {
+    "id": "18",
+    "title": "Automatic Plant Watering System",
+    "imageUrl": "https://placehold.co/300x300.png?text=Plant+System",
+    "price": 55,
+    "retailPrice": 110,
+    "discountPercentage": 50,
+    "location": "North End, Long Beach",
+    "timeLeft": "2h 55m",
+    "categoryId": "Patio, Lawn & Garden"
+  },
+  {
+    "id": "19",
+    "title": "Professional Makeup Kit",
+    "imageUrl": "https://placehold.co/300x300.png?text=Makeup+Kit",
+    "price": 85,
+    "retailPrice": 170,
+    "discountPercentage": 50,
+    "location": "Commerce Circle, Bakersfield",
+    "timeLeft": "4h 05m",
+    "categoryId": "Beauty & Personal Care"
+  },
+  {
+    "id": "20",
+    "title": "Smart Home Security System",
+    "imageUrl": "https://placehold.co/300x300.png?text=Security+System",
+    "price": 199,
+    "retailPrice": 399,
+    "discountPercentage": 50,
+    "location": "Mission District, Anaheim",
+    "timeLeft": "6h 15m",
+    "categoryId": "Tools & Home Improvement"
+  }
+]
