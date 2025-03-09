@@ -22,7 +22,7 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
     const newPrice = item.price + bidIncrement;
 
     // Emit bid event to server
-    emit("place_bid", {
+    emit("bid.place", {
       itemId,
       price: newPrice,
       timestamp: Date.now(),
@@ -40,13 +40,13 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
 
   useEffect(() => {
     // Listen for bid updates from other users
-    on<{ itemId: string; newPrice: number }>("bid_update", (data) => {
+    on<{ itemId: string; newPrice: number }>("bid.update", (data) => {
       updateItemPrice(data.itemId, data.newPrice);
     });
 
     return () => {
       // Clean up event listener on unmount
-      off("bid_update");
+      off("bid.update");
     };
   }, [on, off]);
 

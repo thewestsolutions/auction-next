@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogoutButton } from "@/components/logout-button";
+import useSocket from "@/lib/useSocket";
 
 interface HeaderActionsProps {
   isLoggedIn: boolean;
@@ -25,6 +26,7 @@ export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsPr
   const { theme, setTheme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(defaultIsLoggedIn);
   const { status } = useSession();
+  const { isConnected } = useSocket();
 
   useEffect(() => {
     setIsLoggedIn(status === "loading" ? defaultIsLoggedIn : status === "authenticated");
@@ -85,6 +87,11 @@ export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsPr
           </Button>
         </>
       )}
+
+      <div
+        className={`h-3 w-3 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}
+        title={isConnected ? "Socket connected" : "Socket disconnected"}
+      />
     </div>
   );
 }
