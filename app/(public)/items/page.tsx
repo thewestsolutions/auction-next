@@ -1,4 +1,4 @@
-import ItemCard from "@/components/cards/item-card";
+import ItemsList from "@/components/lists/items-list";
 import db from "@/lib/db";
 
 export default function ItemsPage() {
@@ -8,19 +8,7 @@ export default function ItemsPage() {
     <div className="container">
       <h1 className="mb-6 text-3xl font-bold">Featured Items</h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((item) => (
-          <ItemCard
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            imageUrl={item.imageUrl}
-            price={item.price}
-            retailPrice={item.retailPrice}
-            discountPercentage={item.discountPercentage}
-            location={item.location}
-            timeLeft={item.timeLeft}
-          />
-        ))}
+        <ItemsList items={items} />
       </div>
     </div>
   );
