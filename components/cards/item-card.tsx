@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Clock, MapPin, Tag } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { BidButton } from "@/components/buttons/bid-button";
 
 interface ItemCardProps {
   id: string;
@@ -22,12 +22,14 @@ export default function ItemCard({
   id,
   title,
   imageUrl,
-  price,
+  price: initialPrice,
   retailPrice,
   discountPercentage,
   location,
   timeLeft,
 }: ItemCardProps) {
+  const [currentPrice, setCurrentPrice] = useState(initialPrice);
+
   // Parse the time string (e.g., "5h 30m" or "2d 12h")
   const parseTimeString = (timeStr: string) => {
     const parts = timeStr.split(" ");
@@ -87,6 +89,11 @@ export default function ItemCard({
 
   const [remainingTime, setRemainingTime] = useState(initialTimeDisplay);
   const [isExpired, setIsExpired] = useState(initialSeconds <= 0);
+
+  // Handle bid updates
+  const handleBidPlaced = (newPrice: number) => {
+    setCurrentPrice(newPrice);
+  };
 
   useEffect(() => {
     // Set the initial time display immediately
@@ -164,9 +171,12 @@ export default function ItemCard({
       </CardContent>
 
       <CardFooter className="mt-auto px-4 pt-0 pb-4">
-        <Button className="w-full bg-amber-500 hover:bg-amber-600" disabled={isExpired}>
-          {isExpired ? "Auction Ended" : `Bid $${price.toFixed(2)}`}
-        </Button>
+        <BidButton
+          itemId={id}
+          price={currentPrice}
+          isExpired={isExpired}
+          onBidPlaced={handleBidPlaced}
+        />
       </CardFooter>
     </Card>
   );

@@ -9,6 +9,9 @@ const port = dev ? 3002 : 443;
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
+// Track current highest bids for items
+const itemBids = new Map<string, { price: number; timestamp: number }>();
+
 app.prepare().then(() => {
   const server = createServer(handle);
   const io = new Server(server, {
@@ -30,6 +33,27 @@ app.prepare().then(() => {
         ...message,
         sender: "other", // Change sender to 'other' for recipients
       });
+    });
+
+    // Handle bid events
+    socket.on("place_bid", (bidData: { itemId: string; price: number; timestamp: number }) => {
+      console.log("bid received:", bidData);
+
+      const { itemId, price, timestamp } = bidData;
+      const currentBid = itemBids.get(itemId);
+
+      // Only accept bid if it's higher than current bid
+      if (!currentBid || price > currentBid.price) {
+        // Store the new bid
+        itemBids.set(itemId, { price, timestamp });
+
+        // Broadcast the bid update to all clients (including sender)
+        io.emit("bid_update", {
+          itemId,
+          newPrice: price,
+          timestamp,
+        });
+      }
     });
 
     socket.on("disconnect", () => {
