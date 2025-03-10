@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Timer from "@/components/display/timer";
+import ItemPrice from "./item-price";
 
 export default function ItemPage({ params }: { params: { id: string } }) {
   const item = db.getItemById(params.id);
@@ -13,7 +14,7 @@ export default function ItemPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Item Image */}
         <div className="relative aspect-square overflow-hidden rounded-lg">
@@ -24,13 +25,12 @@ export default function ItemPage({ params }: { params: { id: string } }) {
         <div className="flex flex-col space-y-6">
           <h1 className="text-3xl font-bold">{item.title}</h1>
 
-          <div className="flex items-end gap-4">
-            <div className="text-2xl font-bold">${item.price.toFixed(2)}</div>
-            <div className="text-muted-foreground line-through">${item.retailPrice.toFixed(2)}</div>
-            <div className="rounded bg-red-100 px-2 py-1 text-sm font-medium text-red-800">
-              {item.discountPercentage}% OFF
-            </div>
-          </div>
+          <ItemPrice
+            price={item.price}
+            retailPrice={item.retailPrice}
+            discountPercentage={item.discountPercentage}
+            id={item.id}
+          />
 
           <Separator />
 

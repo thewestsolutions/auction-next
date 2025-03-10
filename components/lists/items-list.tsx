@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ItemCard from "../cards/item-card";
 import { Item } from "@/lib/db";
 import useSocket from "@/lib/useSocket";
+import { useBid } from "@/lib/useBid";
 
 interface ItemsListProps {
   items: Item[];
@@ -12,6 +13,7 @@ interface ItemsListProps {
 export default function ItemsList({ items: defaultItems }: ItemsListProps) {
   const [items, setItems] = useState(defaultItems);
   const { isConnected, emit, on, off } = useSocket();
+  const { placeBid, onBidUpdate } = useBid();
 
   const handleBid = (itemId: string) => {
     const item = items.find((i) => i.id === itemId);
@@ -21,12 +23,7 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
     const bidIncrement = item.price < 100 ? 5 : 10;
     const newPrice = item.price + bidIncrement;
 
-    // Emit bid event to server
-    emit("bid.place", {
-      itemId,
-      price: newPrice,
-      timestamp: Date.now(),
-    });
+    placeBid(itemId, newPrice);
   };
 
   const updateItemPrice = (itemId: string, newPrice: number) => {

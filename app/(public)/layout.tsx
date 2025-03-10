@@ -71,7 +71,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <main className="z-0 flex-grow px-8 py-4">{children}</main>
 
       <footer className="border-border border-t py-12">
-        <div className="container">
+        <div>
           <div className="grid grid-cols-1 gap-8 px-8 md:grid-cols-3">
             {/* Information Column */}
             <div>
