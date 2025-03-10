@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { createClient } from "@/lib/supabase-browser";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -17,6 +17,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const supabase = createClient();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,15 +37,15 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      // Sign in with NextAuth
-      const result = await signIn("credentials", {
-        redirect: false,
+      const { error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      if (result?.error) {
-        throw new Error(result.error);
+      if (error) {
+        console.error(error);
+        setError(error.message);
+        return;
       }
 
       // Redirect to dashboard

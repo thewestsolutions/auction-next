@@ -1,12 +1,13 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { createClient } from "@/lib/supabase-browser";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 
 export function LogoutButton() {
+  const supabase = createClient();
   const handleLogout = async () => {
-    await signOut({ redirect: false });
+    await supabase.auth.signOut();
     // The page will not redirect, but the session will be cleared
     // and the UI will update automatically due to the session provider
   };

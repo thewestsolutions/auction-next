@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { FacebookIcon, Instagram } from "lucide-react";
 import { HeaderActions } from "./header-actions";
-import { getSession } from "@/lib/auth";
+import { createClient } from "@/lib/supabase-server";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const session = await getSession();
+  const supabase = await createClient();
+
+  const { data } = await supabase.auth.getUser();
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -23,7 +25,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
           <Input placeholder="Search" className="h-10" />
 
-          <HeaderActions isLoggedIn={!!session?.user} />
+          <HeaderActions isLoggedIn={!!data?.user} />
         </header>
 
         <nav className="border-border border-b px-8">

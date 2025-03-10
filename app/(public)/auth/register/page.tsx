@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { createClient } from "@/lib/supabase-browser";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -19,6 +19,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const supabase = createClient();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,32 +44,20 @@ export default function RegisterPage() {
     try {
       setLoading(true);
 
-      // Register the user using our Next.js API route
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
-
-      // Auto sign in after registration
-      const result = await signIn("credentials", {
-        redirect: false,
+      const { error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          data: {
+            email_confirmed_at: new Date().toISOString(),
+          },
+        },
       });
 
-      if (result?.error) {
-        throw new Error(result.error);
+      if (error) {
+        console.error(error);
+        setError(error.message);
+        return;
       }
 
       // Redirect to dashboard
