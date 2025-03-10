@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button";
 import Timer from "@/components/display/timer";
 import ItemPrice from "./item-price";
 
-export default function ItemPage({ params }: { params: { id: string } }) {
-  const item = db.getItemById(params.id);
+interface ItemPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ItemPage({ params }: ItemPageProps) {
+  const { id } = await params;
+  const item = db.getItemById(id);
 
   if (!item) {
     notFound();
