@@ -72,11 +72,6 @@ class Database {
     return [...this.users];
   }
 
-  // Category methods
-  getAllCategories(): Category[] {
-    return [...this.categories];
-  }
-
   // Item methods
   getItems(count = 20): Item[] {
     // Return all items or limit by count if specified

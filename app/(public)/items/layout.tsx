@@ -1,7 +1,9 @@
-import db from "@/lib/db";
+import { createClient } from "@/lib/supabase-server";
 
-export default function ItemsLayout({ children }: { children: React.ReactNode }) {
-  const categories = db.getAllCategories();
+export default async function ItemsLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await createClient();
+
+  const { data: categories } = await supabase.from("categories").select("*");
 
   return (
     <div className="flex gap-12">
@@ -14,10 +16,10 @@ export default function ItemsLayout({ children }: { children: React.ReactNode })
 
         <h3 className="mb-2 text-lg font-medium">Category</h3>
         <ul>
-          {categories.map((category, index) => (
+          {categories?.map((category, index) => (
             <li key={index} className="mb-2">
               <a
-                href="#"
+                href={`/items`}
                 className={`text-muted-foreground hover:text-primary flex items-center rounded-md p-2 hover:bg-gray-100 dark:hover:bg-gray-700`}
               >
                 <span className="mr-2 w-6">{category.icon}</span>
