@@ -27,9 +27,6 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
       price: newPrice,
       timestamp: Date.now(),
     });
-
-    // Update local state immediately (optimistic update)
-    updateItemPrice(itemId, newPrice);
   };
 
   const updateItemPrice = (itemId: string, newPrice: number) => {
@@ -48,7 +45,7 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
       // Clean up event listener on unmount
       off("bid.update");
     };
-  }, [on, off]);
+  }, [on, off, isConnected]);
 
   useEffect(() => {
     setItems(defaultItems);

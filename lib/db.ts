@@ -82,6 +82,10 @@ class Database {
     // Return all items or limit by count if specified
     return count ? this.items.slice(0, count) : [...this.items];
   }
+
+  getItemById(id: string): Item | undefined {
+    return this.items.find((item) => item.id === id);
+  }
 }
 
 // Create a singleton instance

@@ -29,7 +29,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <nav className="border-border border-b px-8">
           <div className="flex space-x-8">
             <Link
-              href="/"
+              href="/items"
               className="text-muted-foreground hover:text-primary py-4 text-sm font-medium"
             >
               View All
