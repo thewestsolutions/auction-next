@@ -12,8 +12,8 @@ interface ItemsListProps {
 
 export default function ItemsList({ items: defaultItems }: ItemsListProps) {
   const [items, setItems] = useState(defaultItems);
-  const { isConnected, emit, on, off } = useSocket();
-  const { placeBid, onBidUpdate } = useBid();
+  const { isConnected, on, off } = useSocket();
+  const { placeBid } = useBid();
 
   const handleBid = (itemId: string) => {
     const item = items.find((i) => i.id === itemId);

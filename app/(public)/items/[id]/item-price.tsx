@@ -1,6 +1,5 @@
 "use client";
 
-import useSocket from "@/lib/useSocket";
 import { useState, useEffect } from "react";
 import { useBid } from "@/lib/useBid";
 interface ItemPriceProps {
