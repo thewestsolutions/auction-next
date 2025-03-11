@@ -13,8 +13,6 @@ export default async function Page({ params }: Props) {
 
   const { data: category, error } = await getCategoryBySlug(supabase, slug);
 
-  console.log(category, error);
-
   if (error || !category) {
     notFound();
   }

@@ -15,13 +15,15 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <div className="flex min-h-screen flex-col">
       <div className="bg-background sticky top-0 z-10">
         <header className="border-border flex w-full justify-between gap-8 border-b px-8 py-4">
-          <Image
-            src="https://placehold.co/300x150.png"
-            alt="logo"
-            className="h-10"
-            width={150}
-            height={300}
-          />
+          <Link href="/">
+            <Image
+              src="https://placehold.co/300x150.png"
+              alt="logo"
+              className="h-10"
+              width={150}
+              height={300}
+            />
+          </Link>
 
           <Input placeholder="Search" className="h-10" />
 

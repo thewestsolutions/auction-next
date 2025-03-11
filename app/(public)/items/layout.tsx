@@ -1,5 +1,6 @@
 import { getCategories } from "@/lib/db-categories";
 import { createClient } from "@/lib/supabase-server";
+import Link from "next/link";
 
 export default async function ItemsLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -16,7 +17,9 @@ export default async function ItemsLayout({ children }: { children: React.ReactN
       <div className={`bg-background min-h-screen w-64 dark:text-white`}>
         <h2 className="mb-4 flex items-center justify-between text-xl font-bold">
           Staff Picks
-          <span className={`text-sm font-normal text-blue-600 dark:text-blue-400`}>View All</span>
+          <Link href="/items" className="text-sm font-normal text-blue-600 dark:text-blue-400">
+            View All
+          </Link>
         </h2>
 
         <h3 className="mb-2 text-lg font-medium">Category</h3>
