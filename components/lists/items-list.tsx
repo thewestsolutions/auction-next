@@ -5,12 +5,14 @@ import ItemCard from "../cards/item-card";
 import { Item } from "@/types/supabase";
 import { createClient } from "@/lib/supabase-browser";
 import Pagination from "@/components/display/pagination";
+import { getItems } from "@/lib/db-items";
 
 interface ItemsListProps {
   items: Item[];
+  categoryId?: number;
 }
 
-export default function ItemsList({ items: defaultItems }: ItemsListProps) {
+export default function ItemsList({ items: defaultItems, categoryId }: ItemsListProps) {
   const [items, setItems] = useState<Item[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -22,15 +24,7 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
     setLoading(true);
     try {
       // Calculate range for pagination
-      const from = (page - 1) * itemsPerPage;
-      const to = from + itemsPerPage - 1;
-
-      // Fetch items with pagination
-      const { data, count, error } = await supabase
-        .from("items")
-        .select("*", { count: "exact" })
-        .range(from, to)
-        .order("id", { ascending: true });
+      const { data, count, error } = await getItems(supabase, categoryId, page, itemsPerPage);
 
       if (error) {
         console.error("Error fetching items:", error);

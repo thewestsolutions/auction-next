@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Timer from "@/components/display/timer";
 import ItemPrice from "./item-price";
 import { createClient } from "@/lib/supabase-server";
-
+import { getItemById } from "@/lib/db-items";
 interface ItemPageProps {
   params: Promise<{ id: string }>;
 }
@@ -13,15 +13,11 @@ interface ItemPageProps {
 export default async function ItemPage({ params }: ItemPageProps) {
   const supabase = await createClient();
   const { id } = await params;
-  const { data: items, error } = await supabase.from("items").select("*").eq("id", id);
+  const { data: item, error } = await getItemById(supabase, parseInt(id));
 
-  if (error || items.length < 1) {
+  if (error || !item) {
     notFound();
   }
-
-  const item = items[0];
-
-  console.log(item);
 
   return (
     <div className="container">

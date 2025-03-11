@@ -9,13 +9,27 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
 );
 
-function categoryFactory() {
-  const title = faker.commerce.department();
+function categoryFactory(existingTitles: Set<string> = new Set()): {
+  icon: string;
+  title: string;
+  slug: string;
+} {
+  let title = faker.commerce.department();
+  let attempts = 0;
+
+  // Ensure title is unique
+  while (existingTitles.has(title.toLowerCase()) && attempts < 20) {
+    title = `${faker.commerce.department()} ${faker.commerce.productAdjective()}`;
+    attempts++;
+  }
+
+  existingTitles.add(title.toLowerCase());
+  const slug = title.toLowerCase().replace(/ /g, "-");
 
   return {
     icon: faker.internet.emoji(),
     title,
-    slug: title.toLowerCase().replace(/ /g, "-"),
+    slug,
   };
 }
 
@@ -31,9 +45,14 @@ function itemFactory(categoryId: number) {
 }
 
 async function seedCategories() {
+  // Clean database before seeding
+  console.log("Cleaning database...");
+  await supabase.from("items").delete().neq("id", 0);
   await supabase.from("categories").delete().neq("id", 0);
+  console.log("Database cleaned successfully");
 
-  const categories = Array.from({ length: 10 }, categoryFactory);
+  const existingTitles = new Set<string>();
+  const categories = Array.from({ length: 10 }, () => categoryFactory(existingTitles));
 
   const { error } = await supabase.from("categories").insert(categories);
 
