@@ -34,7 +34,7 @@ export default function ItemCard({
   return (
     <Card className="flex h-full flex-col gap-0 overflow-hidden py-0">
       <CardHeader className="p-0">
-        <Link href={`/items/${id}`}>
+        <Link href={`/item/${id}`}>
           <div className="relative">
             {/* Time left indicator */}
             <div
@@ -61,7 +61,7 @@ export default function ItemCard({
       </CardHeader>
 
       <CardContent className="flex-grow p-4">
-        <Link href={`/items/${id}`} className="block">
+        <Link href={`/item/${id}`} className="block">
           <h3 className="mb-1 line-clamp-2 text-lg font-semibold">{title}</h3>
         </Link>
 

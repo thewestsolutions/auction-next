@@ -1,5 +1,4 @@
 import ItemsList from "@/components/lists/items-list";
-import db from "@/lib/db";
 import { createClient } from "@/lib/supabase-server";
 
 export default async function ItemsPage() {

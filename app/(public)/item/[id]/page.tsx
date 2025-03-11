@@ -1,29 +1,32 @@
-import db from "@/lib/db";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Timer from "@/components/display/timer";
 import ItemPrice from "./item-price";
+import { createClient } from "@/lib/supabase-server";
 
 interface ItemPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default async function ItemPage({ params }: ItemPageProps) {
+  const supabase = await createClient();
   const { id } = await params;
-  const item = db.getItemById(id);
+  const { data: items, error } = await supabase.from("items").select("*").eq("id", id);
 
-  if (!item) {
+  if (error || items.length < 1) {
     notFound();
   }
+
+  const item = items[0];
 
   return (
     <div className="container">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Item Image */}
         <div className="relative aspect-square overflow-hidden rounded-lg">
-          <Image src={item.imageUrl} alt={item.title} fill className="object-cover" priority />
+          <Image src={item.image_cover} alt={item.title} fill className="object-cover" priority />
         </div>
 
         {/* Item Details */}
@@ -31,10 +34,9 @@ export default async function ItemPage({ params }: ItemPageProps) {
           <h1 className="text-3xl font-bold">{item.title}</h1>
 
           <ItemPrice
-            price={item.price}
-            retailPrice={item.retailPrice}
-            discountPercentage={item.discountPercentage}
-            id={item.id}
+            price={item.price_bid}
+            retailPrice={item.price_retail}
+            discountPercentage={0}
           />
 
           <Separator />
@@ -47,7 +49,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
             <div className="flex justify-between">
               <span className="text-muted-foreground">Time Left:</span>
               <span>
-                <Timer timeLeft={item.timeLeft} />
+                <Timer timeLeft={""} />
               </span>
             </div>
           </div>
