@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import Timer from "../display/timer";
 interface ItemCardProps {
-  id: string;
+  id: number;
   title: string;
   imageUrl: string;
   price: number;

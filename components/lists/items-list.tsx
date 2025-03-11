@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import ItemCard from "../cards/item-card";
-import { Item } from "@/lib/db";
 import useSocket from "@/lib/useSocket";
-import { useBid } from "@/lib/useBid";
+import { Item } from "@/types/supabase";
 
 interface ItemsListProps {
   items: Item[];
@@ -13,17 +12,14 @@ interface ItemsListProps {
 export default function ItemsList({ items: defaultItems }: ItemsListProps) {
   const [items, setItems] = useState(defaultItems);
   const { isConnected, on, off } = useSocket();
-  const { placeBid } = useBid();
 
-  const handleBid = (itemId: string) => {
+  const handleBid = (itemId: number) => {
     const item = items.find((i) => i.id === itemId);
     if (!item || !isConnected) return;
 
     // Calculate new bid amount
-    const bidIncrement = item.price < 100 ? 5 : 10;
-    const newPrice = item.price + bidIncrement;
-
-    placeBid(itemId, newPrice);
+    const bidIncrement = item.price_bid < 100 ? 5 : 10;
+    const newPrice = item.price_bid + bidIncrement;
   };
 
   const updateItemPrice = (itemId: string, newPrice: number) => {
@@ -53,12 +49,12 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
       key={item.id}
       id={item.id}
       title={item.title}
-      imageUrl={item.imageUrl}
-      price={item.price}
-      retailPrice={item.retailPrice}
-      discountPercentage={item.discountPercentage}
-      location={item.location}
-      timeLeft={item.timeLeft}
+      imageUrl={item.image_cover}
+      price={item.price_bid}
+      retailPrice={item.price_retail}
+      discountPercentage={0}
+      location={""}
+      timeLeft={item.expires_at}
       onBid={() => handleBid(item.id)}
     />
   ));
