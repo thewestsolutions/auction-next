@@ -9,22 +9,14 @@ export default function Timer({
   timeLeft: string;
   onExpired?: (isExpired: boolean) => void;
 }) {
-  // Parse the time string (e.g., "5h 30m" or "2d 12h")
-  const parseTimeString = (timeStr: string) => {
-    const parts = timeStr.split(" ");
-    let totalSeconds = 0;
+  // Calculate seconds remaining from ISO date string
+  const calculateTimeRemaining = (endTimeStr: string): number => {
+    const endTime = new Date(endTimeStr).getTime();
+    const now = new Date().getTime();
+    const diff = endTime - now;
 
-    parts.forEach((part) => {
-      const value = parseInt(part);
-      const unit = part.replace(/[0-9]/g, "");
-
-      if (unit === "d") totalSeconds += value * 86400;
-      else if (unit === "h") totalSeconds += value * 3600;
-      else if (unit === "m") totalSeconds += value * 60;
-      else if (unit === "s") totalSeconds += value;
-    });
-
-    return totalSeconds;
+    // Return seconds remaining (or 0 if expired)
+    return Math.max(0, Math.floor(diff / 1000));
   };
 
   // Convert seconds to formatted time string with max 2 units
@@ -62,8 +54,8 @@ export default function Timer({
     return result.trim();
   };
 
-  // Initial parsing
-  const initialSeconds = parseTimeString(timeLeft);
+  // Initial calculation
+  const initialSeconds = calculateTimeRemaining(timeLeft);
   const initialTimeDisplay = initialSeconds <= 0 ? "Expired" : formatTimeString(initialSeconds);
 
   const [remainingTime, setRemainingTime] = useState(initialTimeDisplay);
@@ -78,11 +70,10 @@ export default function Timer({
       onExpired?.(false);
     }
 
-    let secondsLeft = initialSeconds;
-
     // Update the timer every second
     const timer = setInterval(() => {
-      secondsLeft -= 1;
+      const secondsLeft = calculateTimeRemaining(timeLeft);
+
       if (secondsLeft <= 0) {
         clearInterval(timer);
         setRemainingTime("Expired");
@@ -94,7 +85,7 @@ export default function Timer({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [initialSeconds, timeLeft, onExpired]);
+  }, [timeLeft, onExpired, initialSeconds]);
 
   return remainingTime;
 }

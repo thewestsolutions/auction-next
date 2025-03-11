@@ -21,6 +21,8 @@ export default async function ItemPage({ params }: ItemPageProps) {
 
   const item = items[0];
 
+  console.log(item);
+
   return (
     <div className="container">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -33,11 +35,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
         <div className="flex flex-col space-y-6">
           <h1 className="text-3xl font-bold">{item.title}</h1>
 
-          <ItemPrice
-            price={item.price_bid}
-            retailPrice={item.price_retail}
-            discountPercentage={0}
-          />
+          <ItemPrice price={item.price_bid} retailPrice={item.price_retail} />
 
           <Separator />
 
@@ -49,7 +47,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
             <div className="flex justify-between">
               <span className="text-muted-foreground">Time Left:</span>
               <span>
-                <Timer timeLeft={""} />
+                <Timer timeLeft={item.expires_at} />
               </span>
             </div>
           </div>
