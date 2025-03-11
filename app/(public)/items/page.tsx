@@ -4,7 +4,10 @@ import { createClient } from "@/lib/supabase-server";
 
 export default async function ItemsPage() {
   const supabase = await createClient();
-  const { data: items, error } = await supabase.from("items").select("*");
+  const { data: items, error } = await supabase
+    .from("items")
+    .select("*")
+    .order("id", { ascending: true });
 
   if (error) {
     console.error("Error fetching items:", error);

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Clock, MapPin, Tag } from "lucide-react";
+import { Clock, Tag } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -14,7 +14,6 @@ interface ItemCardProps {
   price: number;
   retailPrice: number;
   discountPercentage: number;
-  location: string;
   timeLeft: string;
   onBid?: () => void;
 }
@@ -26,7 +25,6 @@ export default function ItemCard({
   price,
   retailPrice,
   discountPercentage,
-  location,
   timeLeft,
   onBid,
 }: ItemCardProps) {
@@ -67,13 +65,6 @@ export default function ItemCard({
           <h3 className="mb-1 line-clamp-2 text-lg font-semibold">{title}</h3>
         </Link>
 
-        <div className="mb-3 flex items-center gap-2">
-          <span className="flex items-center gap-1 text-sm text-gray-500">
-            <MapPin size={16} />
-            {location}
-          </span>
-        </div>
-
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1 text-sm text-gray-500">
             <Tag size={16} />
@@ -83,12 +74,8 @@ export default function ItemCard({
       </CardContent>
 
       <CardFooter className="mt-auto px-4 pt-0 pb-4">
-        <Button
-          className="w-full cursor-pointer bg-amber-500 hover:bg-amber-600"
-          disabled={isExpired}
-          onClick={onBid}
-        >
-          {isExpired ? "Auction Ended" : `Bid $${price.toFixed(2)}`}
+        <Button className="w-full cursor-pointer bg-amber-500 hover:bg-amber-600" onClick={onBid}>
+          {`Bid $${price.toFixed(2)}`}
         </Button>
       </CardFooter>
     </Card>
