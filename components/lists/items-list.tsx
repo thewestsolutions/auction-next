@@ -6,6 +6,7 @@ import { Item } from "@/types/supabase";
 import { createClient } from "@/lib/supabase-browser";
 import Pagination from "@/components/display/pagination";
 import { getItems } from "@/lib/db-items";
+import { useSearchParams } from "next/navigation";
 
 interface ItemsListProps {
   items: Item[];
@@ -13,8 +14,13 @@ interface ItemsListProps {
 }
 
 export default function ItemsList({ items: defaultItems, categoryId }: ItemsListProps) {
+  const searchParams = useSearchParams();
+
+  // Get initial page from URL or default to 1
+  const initialPage = Number(searchParams.get("page")) || 1;
+
   const [items, setItems] = useState<Item[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const itemsPerPage = 8;
@@ -50,7 +56,7 @@ export default function ItemsList({ items: defaultItems, categoryId }: ItemsList
   };
 
   useEffect(() => {
-    // Initialize with first page of items
+    // Initialize with items for the current page from URL
     fetchItems(currentPage);
   }, [currentPage]);
 
@@ -77,6 +83,19 @@ export default function ItemsList({ items: defaultItems, categoryId }: ItemsList
       supabase.removeChannel(channel);
     };
   }, [supabase]);
+
+  // Update URL when page changes
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (currentPage === 1) {
+      url.searchParams.delete("page");
+    } else {
+      url.searchParams.set("page", currentPage.toString());
+    }
+
+    // Replace state instead of pushing to avoid creating extra history entries
+    window.history.replaceState({}, "", url.toString());
+  }, [currentPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
