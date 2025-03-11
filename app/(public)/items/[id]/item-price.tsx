@@ -1,29 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useBid } from "@/lib/useBid";
 interface ItemPriceProps {
   price: number;
   retailPrice: number;
   discountPercentage: number;
-  id: string;
 }
 
-export default function ItemPrice({
-  price: defaultPrice,
-  retailPrice,
-  discountPercentage,
-  id,
-}: ItemPriceProps) {
-  const [price, setPrice] = useState(defaultPrice);
-  const { onBidUpdate } = useBid();
-
-  useEffect(() => {
-    onBidUpdate(id, (price) => {
-      setPrice(price);
-    });
-  }, [id, onBidUpdate]);
-
+export default function ItemPrice({ price, retailPrice, discountPercentage }: ItemPriceProps) {
   return (
     <div className="flex items-end gap-4">
       <div className="text-2xl font-bold">${price.toFixed(2)}</div>
