@@ -4,14 +4,7 @@ import { useEffect, useState } from "react";
 import ItemCard from "../cards/item-card";
 import { Item } from "@/types/supabase";
 import { createClient } from "@/lib/supabase-browser";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import Pagination from "@/components/display/pagination";
 
 interface ItemsListProps {
   items: Item[];
@@ -91,46 +84,8 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
     };
   }, [supabase]);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-  };
-
-  // Generate limited page numbers for pagination
-  const getPageNumbers = () => {
-    const delta = 1; // Number of pages to show before and after current page
-    const pages = [];
-
-    // Always include first page
-    pages.push(1);
-
-    // Calculate range around current page
-    const rangeStart = Math.max(2, currentPage - delta);
-    const rangeEnd = Math.min(totalPages - 1, currentPage + delta);
-
-    // Add ellipsis after first page if needed
-    if (rangeStart > 2) {
-      pages.push(-1); // -1 represents ellipsis
-    }
-
-    // Add pages in the calculated range
-    for (let i = rangeStart; i <= rangeEnd; i++) {
-      pages.push(i);
-    }
-
-    // Add ellipsis before last page if needed
-    if (rangeEnd < totalPages - 1) {
-      pages.push(-2); // -2 represents ellipsis
-    }
-
-    // Always include last page if it exists
-    if (totalPages > 1) {
-      pages.push(totalPages);
-    }
-
-    return pages;
   };
 
   return (
@@ -155,43 +110,13 @@ export default function ItemsList({ items: defaultItems }: ItemsListProps) {
         )}
       </div>
 
-      {totalPages > 1 && (
-        <Pagination className="mt-8">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-                className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
-            </PaginationItem>
-
-            {getPageNumbers().map((number, index) => (
-              <PaginationItem key={index}>
-                {number < 0 ? (
-                  <span className="mx-1 flex h-9 w-9 items-center justify-center text-sm">...</span>
-                ) : (
-                  <PaginationLink
-                    isActive={currentPage === number}
-                    onClick={() => handlePageChange(number)}
-                    className="cursor-pointer"
-                  >
-                    {number}
-                  </PaginationLink>
-                )}
-              </PaginationItem>
-            ))}
-
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
-                className={
-                  currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalItems={totalCount}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+        className="mt-8"
+      />
     </div>
   );
 }
