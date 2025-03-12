@@ -30,7 +30,11 @@ export default function ItemsList({ items: defaultItems, categoryId }: ItemsList
     setLoading(true);
     try {
       // Calculate range for pagination
-      const { data, count, error } = await getItems(supabase, categoryId, page, itemsPerPage);
+      const { data, count, error } = await getItems(supabase, {
+        categoryId,
+        page,
+        itemsPerPage,
+      });
 
       if (error) {
         console.error("Error fetching items:", error);

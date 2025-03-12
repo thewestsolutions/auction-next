@@ -17,7 +17,9 @@ export default async function Page({ params }: Props) {
     notFound();
   }
 
-  const { data: items, error: itemsError } = await getItems(supabase, category.id);
+  const { data: items, error: itemsError } = await getItems(supabase, {
+    categoryId: category.id,
+  });
 
   if (itemsError) {
     console.error("Error fetching items:", itemsError);

@@ -2,17 +2,31 @@ import { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getItems(
   supabase: SupabaseClient,
-  categoryId?: number,
-  page: number = 1,
-  itemsPerPage: number = 20
+  options?: {
+    categoryId?: number;
+    page?: number;
+    itemsPerPage?: number;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+  }
 ) {
+  const {
+    categoryId,
+    page = 1,
+    itemsPerPage = 20,
+    sortBy = "id",
+    sortOrder = "asc",
+  } = options || {};
+
   const query = supabase.from("items").select("*", { count: "exact" });
 
   if (categoryId) {
     query.eq("category_id", categoryId);
   }
 
-  query.range((page - 1) * itemsPerPage, page * itemsPerPage - 1).order("id", { ascending: true });
+  query
+    .range((page - 1) * itemsPerPage, page * itemsPerPage - 1)
+    .order(sortBy, { ascending: sortOrder === "asc" });
 
   const { data, error, count } = await query;
 
