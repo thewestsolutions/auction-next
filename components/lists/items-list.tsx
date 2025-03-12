@@ -53,10 +53,15 @@ export default function ItemsList({ items: defaultItems, categoryId }: ItemsList
   };
 
   const handleBid = async (item: Item) => {
-    await supabase
-      .from("items")
-      .update({ price_bid: item.price_bid + 5 })
-      .eq("id", item.id);
+    const amount = item.price_bid + 5;
+
+    await supabase.from("items").update({ price_bid: amount }).eq("id", item.id);
+
+    await supabase.from("bid_history").insert({
+      item_id: item.id,
+      user_id: (await supabase.auth.getUser()).data.user?.id,
+      amount: amount,
+    });
   };
 
   useEffect(() => {
