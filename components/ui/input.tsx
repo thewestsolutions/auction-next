@@ -10,11 +10,16 @@ const inputVariants = cva(
       variant: {
         default: "",
         primary:
-          "border-2 border-amber-300 dark:border-amber-900 border-2 py-2 px-4 md:text-lg placeholder:text-lg h-auto font-semibold",
+          "border-2 border-gray-300 focus:border-amber-300 dark:border-amber-900 dark:hover:border-amber-800 border md:text-lg placeholder:text-lg font-semibold",
+      },
+      inputSize: {
+        default: "",
+        lg: "h-12 px-4 md:text-lg placeholder:text-lg h-auto font-semibold",
       },
     },
     defaultVariants: {
       variant: "default",
+      inputSize: "default",
     },
   }
 );
@@ -23,13 +28,14 @@ function Input({
   className,
   type,
   variant,
+  inputSize: size,
   ...props
 }: React.ComponentProps<"input"> & VariantProps<typeof inputVariants>) {
   return (
     <input
       type={type}
       data-slot="input"
-      className={cn(inputVariants({ variant, className }))}
+      className={cn(inputVariants({ variant, inputSize: size, className }))}
       {...props}
     />
   );

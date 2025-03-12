@@ -7,33 +7,36 @@ import { createClient } from "@/lib/supabase-browser";
 import Pagination from "@/components/display/pagination";
 import { getItems } from "@/lib/db-items";
 import { useSearchParams } from "next/navigation";
+import { ITEMS_PER_PAGE } from "@/lib/config";
 
 interface ItemsListProps {
   items: Item[];
   categoryId?: number;
+  count: number;
+  size?: number;
 }
 
-export default function ItemsList({ items: defaultItems, categoryId }: ItemsListProps) {
+export default function ItemsList({
+  items: defaultItems,
+  categoryId,
+  count: defaultCount,
+  size = ITEMS_PER_PAGE,
+}: ItemsListProps) {
   const searchParams = useSearchParams();
 
   // Get initial page from URL or default to 1
-  const initialPage = Number(searchParams.get("page")) || 1;
-
-  const [items, setItems] = useState<Item[]>([]);
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [loading, setLoading] = useState(false);
-  const [totalCount, setTotalCount] = useState(0);
-  const itemsPerPage = 8;
+  const [items, setItems] = useState<Item[]>(defaultItems);
+  const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
+  const [totalCount, setTotalCount] = useState(defaultCount);
   const supabase = createClient();
 
   const fetchItems = async (page: number) => {
-    setLoading(true);
     try {
       // Calculate range for pagination
       const { data, count, error } = await getItems(supabase, {
         categoryId,
         page,
-        itemsPerPage,
+        size,
       });
 
       if (error) {
@@ -47,8 +50,6 @@ export default function ItemsList({ items: defaultItems, categoryId }: ItemsList
       }
     } catch (error) {
       console.error("Error fetching items:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -63,19 +64,6 @@ export default function ItemsList({ items: defaultItems, categoryId }: ItemsList
       amount: amount,
     });
   };
-
-  useEffect(() => {
-    // Initialize with items for the current page from URL
-    fetchItems(currentPage);
-  }, [currentPage]);
-
-  useEffect(() => {
-    // Set initial items from props (for SSR)
-    if (defaultItems.length > 0 && items.length === 0) {
-      setItems(defaultItems);
-      setTotalCount(defaultItems.length > itemsPerPage ? defaultItems.length : itemsPerPage * 2); // Estimate if we don't know exact count
-    }
-  }, [defaultItems, items.length]);
 
   useEffect(() => {
     const channel = supabase
@@ -107,38 +95,37 @@ export default function ItemsList({ items: defaultItems, categoryId }: ItemsList
   }, [currentPage]);
 
   const handlePageChange = (page: number) => {
+    fetchItems(page);
     setCurrentPage(page);
   };
 
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {loading ? (
-          <div className="col-span-full py-8 text-center">Loading items...</div>
-        ) : (
-          items.map((item) => (
-            <ItemCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              imageUrl={item.image_cover}
-              price={item.price_bid}
-              retailPrice={item.price_retail}
-              discountPercentage={0}
-              timeLeft={item.expires_at}
-              onBid={() => handleBid(item)}
-            />
-          ))
-        )}
+        {items.map((item) => (
+          <ItemCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            imageUrl={item.image_cover}
+            price={item.price_bid}
+            retailPrice={item.price_retail}
+            discountPercentage={0}
+            timeLeft={item.expires_at}
+            onBid={() => handleBid(item)}
+          />
+        ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalItems={totalCount}
-        itemsPerPage={itemsPerPage}
-        onPageChange={handlePageChange}
-        className="mt-8"
-      />
+      {totalCount > size && (
+        <Pagination
+          currentPage={currentPage}
+          totalItems={totalCount}
+          itemsPerPage={size}
+          onPageChange={handlePageChange}
+          className="mt-8"
+        />
+      )}
     </div>
   );
 }

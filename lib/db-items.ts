@@ -1,11 +1,11 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-
+import { ITEMS_PER_PAGE } from "./config";
 export async function getItems(
   supabase: SupabaseClient,
   options?: {
     categoryId?: number;
     page?: number;
-    itemsPerPage?: number;
+    size?: number;
     sortBy?: string;
     sortOrder?: "asc" | "desc";
   }
@@ -13,7 +13,7 @@ export async function getItems(
   const {
     categoryId,
     page = 1,
-    itemsPerPage = 20,
+    size: itemsPerPage = ITEMS_PER_PAGE,
     sortBy = "id",
     sortOrder = "asc",
   } = options || {};

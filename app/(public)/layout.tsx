@@ -25,23 +25,17 @@ export default async function Layout({ children }: { children: React.ReactNode }
             />
           </Link>
 
-          <Input placeholder="Search" variant="primary" />
+          <Input placeholder="Search" variant="primary" inputSize="lg" />
 
           <HeaderActions isLoggedIn={!!data?.user} />
         </header>
 
-        <nav className="border-border border-b px-8">
+        <nav className="border-border border-b px-8 py-2 font-bold">
           <div className="flex space-x-8">
-            <Link
-              href="/items"
-              className="text-muted-foreground hover:text-primary py-4 text-sm font-medium"
-            >
+            <Link href="/items" className="text-muted-foreground hover:text-primary text-sm">
               View All
             </Link>
-            <Link
-              href="/last-chance"
-              className="text-muted-foreground hover:text-primary py-4 text-sm font-medium"
-            >
+            <Link href="/last-chance" className="text-muted-foreground hover:text-primary text-sm">
               Last Chance
             </Link>
           </div>

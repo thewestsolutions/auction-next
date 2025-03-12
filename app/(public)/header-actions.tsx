@@ -35,7 +35,7 @@ export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsPr
       <Button
         variant="outline"
         size="icon"
-        className="h-12 w-12"
+        className="h-10 w-10"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
@@ -46,13 +46,13 @@ export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsPr
       {isLoggedIn ? (
         <>
           <div className="flex items-center gap-4 whitespace-nowrap">
-            <Link href="/my-bids" className="hover:text-primary text-sm font-medium">
+            <Link href="/my-bids" className="hover:text-primary">
               My Bids
             </Link>
-            <Link href="/my-wins" className="hover:text-primary text-sm font-medium">
+            <Link href="/my-wins" className="hover:text-primary">
               My Wins
             </Link>
-            <Link href="/wishlist" className="hover:text-primary text-sm font-medium">
+            <Link href="/wishlist" className="hover:text-primary">
               Wishlist
             </Link>
           </div>
