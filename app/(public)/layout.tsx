@@ -14,7 +14,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <div className="flex min-h-screen flex-col">
       <div className="bg-background sticky top-0 z-10">
-        <header className="border-border flex w-full justify-between gap-8 border-b px-8 py-4">
+        <header className="border-border flex w-full items-center justify-between gap-8 border-b px-8 py-3">
           <Link href="/">
             <Image
               src="https://placehold.co/300x150.png"
@@ -25,7 +25,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
             />
           </Link>
 
-          <Input placeholder="Search" className="h-10" />
+          <Input placeholder="Search" variant="primary" />
 
           <HeaderActions isLoggedIn={!!data?.user} />
         </header>
@@ -48,7 +48,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         </nav>
       </div>
 
-      <main className="z-0 flex-grow px-8 py-4">{children}</main>
+      <main className="z-0 flex-grow bg-gray-100 px-8 py-4 dark:bg-neutral-950">{children}</main>
 
       <footer className="border-border border-t py-12">
         <div>
