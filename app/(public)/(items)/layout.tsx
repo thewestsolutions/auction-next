@@ -1,12 +1,16 @@
-import { Category } from "@/types/supabase";
+import { getCategories } from "@/lib/db-categories";
+import { createClient } from "@/lib/supabase-server";
 import Link from "next/link";
 
-interface Props {
-  categories: Category[];
-  children: React.ReactNode;
-}
+export default async function ItemsLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await createClient();
 
-export default function CategorySidebarLayout({ children, categories }: Props) {
+  const { data: categories, error } = await getCategories(supabase);
+
+  if (error) {
+    console.error("Error fetching categories:", error);
+  }
+
   return (
     <div className="flex gap-12">
       {/* Sidebar */}
