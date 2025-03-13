@@ -14,6 +14,12 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <div className="flex min-h-screen flex-col">
       <div className="bg-background sticky top-0 z-10">
+        <header className="g">
+          <div>1</div>
+          <div>2</div>
+          <div>3</div>
+        </header>
+
         <header className="border-border flex w-full items-center justify-between gap-8 border-b px-8 py-3">
           <Link href="/">
             <Image
@@ -29,17 +35,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
           <HeaderActions isLoggedIn={!!data?.user} />
         </header>
-
-        <nav className="border-border border-b px-8 py-2 font-bold">
-          <div className="flex space-x-8">
-            <Link href="/items" className="text-muted-foreground hover:text-primary text-sm">
-              View All
-            </Link>
-            <Link href="/last-chance" className="text-muted-foreground hover:text-primary text-sm">
-              Last Chance
-            </Link>
-          </div>
-        </nav>
       </div>
 
       <main className="z-0 flex-grow bg-gray-100 px-8 py-4 dark:bg-neutral-950">{children}</main>
