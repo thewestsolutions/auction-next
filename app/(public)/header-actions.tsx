@@ -46,7 +46,7 @@ export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsPr
       {isLoggedIn ? (
         <>
           <div className="flex items-center gap-4 whitespace-nowrap">
-            <Link href="/my-bids" className="hover:text-primary">
+            <Link href="/bids/ongoing" className="hover:text-primary">
               My Bids
             </Link>
             <Link href="/my-wins" className="hover:text-primary">

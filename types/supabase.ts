@@ -14,3 +14,10 @@ export type Item = {
   image_cover: string;
   expires_at: string;
 };
+
+export type BidHistory = {
+  id: number;
+  item_id: number;
+  user_id: string;
+  amount: number;
+};
