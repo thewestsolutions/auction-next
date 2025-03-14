@@ -1,6 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { ITEMS_PER_PAGE } from "./config";
-import { Item } from "@/types/supabase";
+import { BidHistory, Item } from "@/types/supabase";
+
 export async function getItems(
   supabase: SupabaseClient,
   options?: {
@@ -86,4 +87,42 @@ export async function isFavorite(
     .single();
 
   return !!data;
+}
+
+export async function getBidHistory(supabase: SupabaseClient, itemId: number) {
+  const { data, error } = await supabase
+    .from("bid_history")
+    .select("*")
+    .eq("item_id", itemId)
+    .order("created_at", { ascending: false })
+    .overrideTypes<BidHistory[]>();
+
+  return { data, error };
+}
+
+export async function addBid(
+  supabase: SupabaseClient,
+  itemId: number,
+  userId: string,
+  amount: number
+) {
+  const { error } = await supabase
+    .from("bid_history")
+    .insert({
+      item_id: itemId,
+      user_id: userId,
+      amount: amount,
+    })
+    .overrideTypes<BidHistory>();
+
+  const { data } = await supabase
+    .from("items")
+    .update({
+      price_bid: amount,
+    })
+    .eq("id", itemId)
+    .select("*")
+    .single<Item>();
+
+  return { data, error };
 }

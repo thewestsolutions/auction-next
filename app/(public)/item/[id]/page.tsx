@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase-server";
-import { getItemById, isFavorite } from "@/lib/db-items";
+import { getBidHistory, getItemById, isFavorite } from "@/lib/db-items";
 import { getCategoryById } from "@/lib/db-categories";
-import { Share, Search, Users, Hammer } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,10 +14,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import ItemGallery from "./item-gallery";
 import FavoriteButton from "./favorite-button";
 import CopyButton from "./copy-button";
+import BidPanel from "./bid-panel";
+
 interface ItemPageProps {
   params: Promise<{ id: string }>;
 }
@@ -39,7 +40,8 @@ export default async function ItemPage({ params }: ItemPageProps) {
   } = await supabase.auth.getUser();
 
   const favorite = user ? await isFavorite(supabase, item.id, user.id) : false;
-  console.log("favorite", favorite);
+
+  const { data: bidHistory } = await getBidHistory(supabase, item.id);
 
   return (
     <div className="flex flex-col gap-4">
@@ -87,46 +89,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
           </Link>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <Card>
-            <CardContent>
-              <p className="text-muted-foreground text-sm">Current bid</p>
-              <p className="text-3xl font-bold">${item.price_bid}</p>
-              <p className="text-muted-foreground text-sm">
-                Retail price: ${item.price_retail} (
-                {(((item.price_retail - item.price_bid) / item.price_retail) * 100).toFixed(2)}%
-                off)
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" variant={"primary"}>
-                Bid
-              </Button>
-            </CardFooter>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between gap-2">
-                <span>Bid history</span>
-                <p className="text-muted-foreground flex items-center gap-2 text-sm">
-                  <span className="flex items-center gap-2">
-                    <Users size={16} />
-                    10 bidders
-                  </span>
-
-                  <span className="text-muted-foreground flex items-center gap-2">
-                    <Hammer size={16} />
-                    10 bids
-                  </span>
-                </p>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>No bids yet</p>
-            </CardContent>
-          </Card>
-        </div>
+        <BidPanel item={item} history={bidHistory || []} userId={user?.id} />
       </div>
     </div>
   );
