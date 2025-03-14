@@ -32,13 +32,13 @@ export default function ItemCard({
   const [isExpired, setIsExpired] = useState(false);
 
   return (
-    <Card className="flex h-full flex-col gap-0 overflow-hidden py-0">
-      <CardHeader className="p-0">
+    <Card className="flex h-full flex-col gap-0 overflow-hidden py-0 shadow-none">
+      <CardHeader className="p-1">
         <Link href={`/item/${id}`}>
           <div className="relative">
             {/* Time left indicator */}
             <div
-              className={`absolute top-3 left-3 z-10 rounded-full ${isExpired ? "bg-gray-100 text-gray-600" : "bg-red-100 text-red-600"} px-3 py-1 text-sm`}
+              className={`absolute top-1 left-1 z-10 rounded-md ${isExpired ? "bg-gray-100 text-gray-600" : "border border-red-200 bg-red-100 text-red-600"} px-1 py-0.5 text-xs`}
             >
               <span className="flex items-center gap-1">
                 <Clock size={16} />
@@ -52,7 +52,7 @@ export default function ItemCard({
                 src={imageUrl}
                 alt={title}
                 fill
-                className="object-cover"
+                className="rounded-md object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
@@ -60,21 +60,24 @@ export default function ItemCard({
         </Link>
       </CardHeader>
 
-      <CardContent className="flex-grow p-4">
+      <CardContent className="flex-grow px-2 py-2">
         <Link href={`/item/${id}`} className="block">
-          <h3 className="mb-1 line-clamp-2 text-lg font-semibold">{title}</h3>
+          <h3 className="mb-1 line-clamp-2 text-sm">{title}</h3>
         </Link>
 
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1 text-sm text-gray-500">
+          <span className="flex items-center gap-1 text-xs text-gray-500">
             <Tag size={16} />
             Retail ${retailPrice.toFixed(2)} ({discountPercentage}% off)
           </span>
         </div>
       </CardContent>
 
-      <CardFooter className="mt-auto px-4 pt-0 pb-4">
-        <Button className="w-full cursor-pointer bg-amber-500 hover:bg-amber-600" onClick={onBid}>
+      <CardFooter className="mt-auto px-2 pt-0 pb-4">
+        <Button
+          className="w-full cursor-pointer bg-amber-300 text-amber-900 hover:bg-amber-400"
+          onClick={onBid}
+        >
           {`Bid $${price.toFixed(2)}`}
         </Button>
       </CardFooter>

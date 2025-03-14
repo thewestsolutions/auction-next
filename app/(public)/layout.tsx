@@ -2,7 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import { FacebookIcon, Instagram } from "lucide-react";
+import {
+  Bell,
+  FacebookIcon,
+  Flame,
+  Hammer,
+  Heart,
+  Instagram,
+  List,
+  SquareMenu,
+  Trophy,
+} from "lucide-react";
 import { HeaderActions } from "./header-actions";
 import { createClient } from "@/lib/supabase-server";
 
@@ -13,14 +23,76 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="bg-background sticky top-0 z-10">
-        <header className="g">
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
+      <div className="bg-background sticky top-0 z-10 shadow-md">
+        <header className="grid grid-cols-[3fr_1fr] px-8 py-2">
+          <div className="flex items-center gap-8">
+            <Link href="/">
+              <Image
+                src="https://placehold.co/300x150.png"
+                alt="logo"
+                className="h-8 w-auto"
+                width={150}
+                height={300}
+              />
+            </Link>
+
+            <div className="flex items-center text-sm font-semibold">
+              <Link
+                href="/"
+                className="flex items-center gap-1 rounded-md px-4 py-2 hover:bg-gray-100"
+              >
+                <List size={20} className="text-orange-500" />
+                <span>Categories</span>
+              </Link>
+
+              <Link
+                href="/"
+                className="flex items-center gap-1 rounded-md px-4 py-2 hover:bg-gray-100"
+              >
+                <Flame size={20} className="text-orange-500" />
+                <span>Top deals</span>
+              </Link>
+              <Link
+                href="/bids/ongoing"
+                className="flex items-center gap-1 rounded-md px-4 py-2 hover:bg-gray-100"
+              >
+                <Hammer size={20} className="text-blue-500" />
+                <span>My bids</span>
+              </Link>
+              <Link
+                href="/"
+                className="flex items-center gap-1 rounded-md px-4 py-2 hover:bg-gray-100"
+              >
+                <Trophy size={20} className="text-yellow-500" />
+                <span>My wins</span>
+              </Link>
+              <Link
+                href="/"
+                className="flex items-center gap-1 rounded-md px-4 py-2 hover:bg-gray-100"
+              >
+                <Heart size={20} className="text-red-500" />
+                <span>Wishlist</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Search..."
+              className="h-8 rounded-full px-4 text-sm placeholder:text-sm"
+            />
+
+            <Button size={"icon"} variant={"secondary"} className="h-8 w-8 border">
+              <Bell size={20} />
+            </Button>
+
+            <Button size={"icon"} variant={"secondary"} className="h-8 w-8">
+              <SquareMenu size={20} />
+            </Button>
+          </div>
         </header>
 
-        <header className="border-border flex w-full items-center justify-between gap-8 border-b px-8 py-3">
+        <header className="border-border flex hidden w-full items-center justify-between gap-8 border-b px-8 py-3">
           <Link href="/">
             <Image
               src="https://placehold.co/300x150.png"
@@ -37,7 +109,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         </header>
       </div>
 
-      <main className="z-0 flex-grow bg-gray-100 px-8 py-4 dark:bg-neutral-950">{children}</main>
+      <main className="z-0 flex-grow p-8 dark:bg-neutral-950">{children}</main>
 
       <footer className="border-border border-t py-12">
         <div>

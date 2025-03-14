@@ -13,7 +13,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="container">
+    <div>
       <h1 className="mb-6 text-3xl font-bold">Featured Items</h1>
       <ItemsList items={items ?? []} count={count ?? 0} size={ITEMS_PER_PAGE} />
     </div>
