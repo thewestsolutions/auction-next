@@ -6,7 +6,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { useState, useEffect } from "react";
 import { addBid } from "@/lib/db-items";
 import { createClient } from "@/lib/supabase-browser";
-
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 interface BidPanelProps {
   item: Item;
   history: BidHistory[];
@@ -65,27 +70,29 @@ export default function BidPanel({ item, history, userId }: BidPanelProps) {
         </CardContent>
         <CardFooter>
           <Button className="w-full" variant={"primary"} onClick={handleBid}>
-            Bid
+            Bid ${bid + 10}
           </Button>
         </CardFooter>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between gap-2">
-            <span>Bid history</span>
-          </CardTitle>
-        </CardHeader>
+      <Card className="py-0">
         <CardContent>
-          {bidHistory.length > 0 ? (
-            bidHistory.map((bid) => (
-              <div key={bid.id}>
-                <p>{bid.amount}</p>
-              </div>
-            ))
-          ) : (
-            <p>No bids yet</p>
-          )}
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="cursor-pointer font-bold">Bid history</AccordionTrigger>
+              <AccordionContent>
+                {bidHistory.length > 0 ? (
+                  bidHistory.map((bid) => (
+                    <div key={bid.id}>
+                      <p>{bid.amount}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No bids yet</p>
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </CardContent>
       </Card>
     </div>
