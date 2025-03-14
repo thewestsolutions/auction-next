@@ -278,9 +278,19 @@ export default async function Layout({ children }: { children: React.ReactNode }
           {/* Copyright and Social */}
           <div className="border-border mt-12 border-t pt-12">
             <div className="flex flex-col items-center justify-between px-8 md:flex-row">
-              <p className="text-muted-foreground text-sm">
-                © 2025 Prime Auctions LLC. All rights reserved.
-              </p>
+              <div className="flex flex-col items-center md:items-start">
+                <p className="text-muted-foreground text-sm">
+                  © 2025 Prime Auctions LLC. All rights reserved.
+                </p>
+                <div className="mt-2 flex gap-4 text-sm">
+                  <Link
+                    href="/terms-and-conditions"
+                    className="text-muted-foreground hover:text-primary"
+                  >
+                    Terms & Conditions
+                  </Link>
+                </div>
+              </div>
               <div className="mt-4 flex gap-4 md:mt-0">
                 <a href="https://facebook.com" className="text-muted-foreground hover:text-primary">
                   <FacebookIcon size={20} />

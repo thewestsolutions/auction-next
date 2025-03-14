@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { BidHistory, Item } from "@/types/supabase";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { addBid } from "@/lib/db-items";
 import { createClient } from "@/lib/supabase-browser";
