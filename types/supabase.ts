@@ -13,6 +13,8 @@ export type Item = {
   category_id: number;
   image_cover: string;
   expires_at: string;
+  images: string[];
+  condition: string;
 };
 
 export type BidHistory = {

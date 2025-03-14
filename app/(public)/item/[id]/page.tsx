@@ -1,11 +1,23 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import Timer from "@/components/display/timer";
-import ItemPrice from "./item-price";
 import { createClient } from "@/lib/supabase-server";
-import { getItemById } from "@/lib/db-items";
+import { getItemById, isFavorite } from "@/lib/db-items";
+import { getCategoryById } from "@/lib/db-categories";
+import { Share, Search, Users, Hammer } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import ItemGallery from "./item-gallery";
+import FavoriteButton from "./favorite-button";
+import CopyButton from "./copy-button";
 interface ItemPageProps {
   params: Promise<{ id: string }>;
 }
@@ -13,46 +25,107 @@ interface ItemPageProps {
 export default async function ItemPage({ params }: ItemPageProps) {
   const supabase = await createClient();
   const { id } = await params;
+
   const { data: item, error } = await getItemById(supabase, parseInt(id));
 
   if (error || !item) {
     notFound();
   }
 
+  const { data: category } = await getCategoryById(supabase, item.category_id);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const favorite = user ? await isFavorite(supabase, item.id, user.id) : false;
+  console.log("favorite", favorite);
+
   return (
-    <div className="container">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {/* Item Image */}
-        <div className="relative aspect-square overflow-hidden rounded-lg">
-          <Image src={item.image_cover} alt={item.title} fill className="object-cover" priority />
-        </div>
+    <div className="flex flex-col gap-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/components">{category.title}</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{item.title}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-        {/* Item Details */}
-        <div className="flex flex-col space-y-6">
-          <h1 className="text-3xl font-bold">{item.title}</h1>
+      <div className="grid grid-cols-[3fr_2fr] gap-4">
+        <div className="flex flex-col gap-4">
+          <ItemGallery images={item.images} title={item.title} />
 
-          <ItemPrice price={item.price_bid} retailPrice={item.price_retail} />
+          <h2 className="text-xl font-medium">{item.title}</h2>
 
-          <Separator />
+          <div className="flex items-start justify-between gap-2">
+            <Badge>
+              Condition: <span className="capitalize">{item.condition}</span>
+            </Badge>
 
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Location:</span>
-              <span>{item.location}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Time Left:</span>
-              <span>
-                <Timer timeLeft={item.expires_at} />
-              </span>
+            <div className="flex gap-2">
+              <FavoriteButton itemId={item.id} isFavorite={favorite} userId={user?.id} />
+
+              <CopyButton />
+
+              <Button variant="outline">
+                <Search className="h-4 w-4" />
+                <span>Find on Google</span>
+              </Button>
             </div>
           </div>
 
-          <Separator />
+          <Link href="/terms-and-conditions">
+            <span>View Terms and conditions</span>
+          </Link>
+        </div>
 
-          <Button className="w-full" size="lg">
-            Bid
-          </Button>
+        <div className="flex flex-col gap-4">
+          <Card>
+            <CardContent>
+              <p className="text-muted-foreground text-sm">Current bid</p>
+              <p className="text-3xl font-bold">${item.price_bid}</p>
+              <p className="text-muted-foreground text-sm">
+                Retail price: ${item.price_retail} (
+                {(((item.price_retail - item.price_bid) / item.price_retail) * 100).toFixed(2)}%
+                off)
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full" variant={"primary"}>
+                Bid
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between gap-2">
+                <span>Bid history</span>
+                <p className="text-muted-foreground flex items-center gap-2 text-sm">
+                  <span className="flex items-center gap-2">
+                    <Users size={16} />
+                    10 bidders
+                  </span>
+
+                  <span className="text-muted-foreground flex items-center gap-2">
+                    <Hammer size={16} />
+                    10 bids
+                  </span>
+                </p>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>No bids yet</p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
