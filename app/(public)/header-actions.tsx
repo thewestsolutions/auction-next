@@ -1,9 +1,6 @@
 "use client";
 
-import { Sun, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Moon } from "lucide-react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -16,13 +13,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogoutButton } from "@/components/logout-button";
 import { createClient } from "@/lib/supabase-browser";
+import { Bell, SquareMenu } from "lucide-react";
 
 interface HeaderActionsProps {
   isLoggedIn: boolean;
 }
 
 export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsProps) {
-  const { theme, setTheme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(defaultIsLoggedIn);
   const supabase = createClient();
 
@@ -31,37 +28,22 @@ export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsPr
   });
 
   return (
-    <div className="flex items-center gap-4">
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-10 w-10"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-        <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-        <span className="sr-only">Toggle theme</span>
-      </Button>
-
+    <div className="flex items-center gap-2">
       {isLoggedIn ? (
         <>
-          <div className="flex items-center gap-4 whitespace-nowrap">
-            <Link href="/bids/ongoing" className="hover:text-primary">
-              My Bids
+          <Button size={"icon"} variant={"secondary"} className="h-8 w-8 border" asChild>
+            <Link href="/notifications">
+              <Bell size={20} />
             </Link>
-            <Link href="/my-wins" className="hover:text-primary">
-              My Wins
-            </Link>
-            <Link href="/wishlist" className="hover:text-primary">
-              Wishlist
-            </Link>
-          </div>
+          </Button>
 
           <DropdownMenu>
-            <DropdownMenuTrigger className="cursor-pointer">
-              <User size={20} />
+            <DropdownMenuTrigger className="cursor-pointer" asChild>
+              <Button size={"icon"} variant={"secondary"} className="h-8 w-8">
+                <SquareMenu size={20} />
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent side="bottom" align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
@@ -76,14 +58,9 @@ export function HeaderActions({ isLoggedIn: defaultIsLoggedIn }: HeaderActionsPr
           </DropdownMenu>
         </>
       ) : (
-        <>
-          <Button variant="outline" className="h-10" asChild>
-            <Link href="/auth/register">Sign up</Link>
-          </Button>
-          <Button className="h-10" asChild>
-            <Link href="/auth/login">Sign in</Link>
-          </Button>
-        </>
+        <Button className="h-10" asChild variant={"outline"}>
+          <Link href="/auth/login">Login</Link>
+        </Button>
       )}
     </div>
   );

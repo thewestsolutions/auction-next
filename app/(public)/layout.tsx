@@ -2,17 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Bell,
-  FacebookIcon,
-  Flame,
-  Hammer,
-  Heart,
-  Instagram,
-  List,
-  SquareMenu,
-  Trophy,
-} from "lucide-react";
+import { FacebookIcon, Flame, Hammer, Heart, Instagram, List, Trophy } from "lucide-react";
 import { HeaderActions } from "./header-actions";
 import { createClient } from "@/lib/supabase-server";
 
@@ -82,30 +72,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
               className="h-8 rounded-full px-4 text-sm placeholder:text-sm"
             />
 
-            <Button size={"icon"} variant={"secondary"} className="h-8 w-8 border">
-              <Bell size={20} />
-            </Button>
-
-            <Button size={"icon"} variant={"secondary"} className="h-8 w-8">
-              <SquareMenu size={20} />
-            </Button>
+            <HeaderActions isLoggedIn={!!data?.user} />
           </div>
-        </header>
-
-        <header className="border-border flex hidden w-full items-center justify-between gap-8 border-b px-8 py-3">
-          <Link href="/">
-            <Image
-              src="https://placehold.co/300x150.png"
-              alt="logo"
-              className="h-10"
-              width={150}
-              height={300}
-            />
-          </Link>
-
-          <Input placeholder="Search" variant="primary" inputSize="lg" />
-
-          <HeaderActions isLoggedIn={!!data?.user} />
         </header>
       </div>
 
