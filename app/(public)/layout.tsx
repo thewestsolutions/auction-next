@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FacebookIcon, Flame, Hammer, Heart, Instagram, List, Trophy } from "lucide-react";
 import { HeaderActions } from "./header-actions";
 import { createClient } from "@/lib/supabase-server";
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -274,6 +275,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
           </div>
         </div>
       </footer>
+
+      <Toaster position="top-right" />
     </div>
   );
 }
