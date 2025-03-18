@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import Timer from "../display/timer";
+
 interface ItemCardProps {
   id: number;
   title: string;

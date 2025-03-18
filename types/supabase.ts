@@ -11,7 +11,6 @@ export type Item = {
   price_retail: number;
   price_bid: number;
   category_id: number;
-  image_cover: string;
   expires_at: string;
   images: string[];
   condition: string;

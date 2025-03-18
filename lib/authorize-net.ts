@@ -165,8 +165,6 @@ export async function addCreditCardToCustomerProfile({
     phoneNumber?: string;
   };
 }) {
-  console.log(cardNumber, expirationDate, cardCode, billTo);
-
   return new Promise<string>((resolve, reject) => {
     try {
       const merchantAuthenticationType = getMerchantAuthentication();

@@ -107,7 +107,7 @@ export default function ItemsList({
             key={item.id}
             id={item.id}
             title={item.title}
-            imageUrl={item.image_cover}
+            imageUrl={item.images?.[0]}
             price={item.price_bid}
             retailPrice={item.price_retail}
             discountPercentage={0}

@@ -6,8 +6,6 @@ export default async function HomePage() {
   const supabase = await createClient();
   const { data: items, error, count } = await getItems(supabase, {});
 
-  console.log("Count:", count);
-
   if (error) {
     console.error("Error fetching items:", error);
   }

@@ -1,0 +1,57 @@
+[
+  {
+    "title": "Books",
+    "slug": "books",
+    "icon": "📚"
+  },
+  {
+    "title": "Movies",
+    "slug": "movies",
+    "icon": "🎥"
+  },
+  {
+    "title": "Music",
+    "slug": "music",
+    "icon": "🎵",
+    "items": [
+      {
+        "title": "SANSUI Monitor 24 Inch 100Hz PC Monitor, HDMI VGA Ports VESA Mount, FHD Computer Monitor Ultra-Slim Ergonomic Tilt Eye Care for Home Office (ES-24F2, HDMI Cable Included)",
+        "expires_at": 10,
+        "price_retail": 109.99,
+        "price_bid": 0,
+        "images": [
+          "https://i.justbid-media.com/Ys_B-4q72KUgK89PpuRdlTu2dLl-zpM9U5igAbP_i4Q/rs:fit:300:300/quality:75/ex:1:ce/plain/s3://goldrush-app-media-production/item_images/1221331/c0348006-e72d-455a-9507-0912244357de.jpg",
+          "https://i.justbid-media.com/nDiWILRGus1oYUBeTzN2YlQS5XsAgkvUaf-uASM-Tbo/rs:fit:1080:1080/quality:75/plain/s3://goldrush-app-media-production/item_images/1221331/e3fdaa54-09d9-4017-8bf0-fea85dc9b7ac.jpg",
+          "https://i.justbid-media.com/Xe3TxLLKx2MiDpqzZgZP1VPzXZRC02Rsibe_lquOXQk/rs:fit:1080:1080/quality:75/plain/s3://goldrush-app-media-production/item_images/1221331/700a5463-0bf6-4b17-9352-90a8aaf320dd.jpg"
+        ],
+        "condition": "new"
+      },
+      {
+        "title": "SAMSUNG 49\" Odyssey G9 (G95C) Series DQHD 1000R Curved Gaming Monitor, 240Hz, 1ms(GtG), DisplayHDR 1000, AMD FreeSync Premium Pro, Eye Saver Mode, Auto Source Switch+, LS49CG950ENXZA, 2024",
+        "expires_at": 10,
+        "price_retail": 799.99,
+        "price_bid": 0,
+        "images": [
+          "https://i.justbid-media.com/46P1--D6ZVkuQkGcbSZl8VOPPHVvfOqNvCaLqLJlirA/rs:fit:1080:1080/quality:75/plain/s3://goldrush-app-media-production/item_images/1230598/854ea2ca-bca0-4b47-bd5a-09c22daa810f.jpg",
+          "https://i.justbid-media.com/5_EtLg-F6lOjixvuIpegsv6x7sl22gIFyx_xnCxMOKI/rs:fit:1080:1080/quality:75/plain/s3://goldrush-app-media-production/item_images/1230598/fe7d4c2f-de62-4971-9bbc-8b04a8e7d6bf.jpg"
+        ],
+        "condition": "new"
+      }
+    ]
+  },
+  {
+    "title": "Games",
+    "slug": "games",
+    "icon": "🎮"
+  },
+  {
+    "title": "Toys",
+    "slug": "toys",
+    "icon": "🧸"
+  },
+  {
+    "title": "Other",
+    "slug": "other",
+    "icon": "🔧"
+  }
+]

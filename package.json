@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "seed": "bun seeder.ts --env-file=.env.local"
+    "seed": "bun seeder/seeder.ts --env-file=.env.local"
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
