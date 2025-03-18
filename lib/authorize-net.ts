@@ -11,166 +11,21 @@ export function getMerchantAuthentication() {
   return merchantAuthenticationType;
 }
 
-/**
- * Process a credit card payment
- */
-export async function chargeCreditCard({
-  cardNumber,
-  expirationDate,
-  cardCode,
-  amount,
-  description = "Payment transaction",
-  customerEmail,
-}: {
-  cardNumber: string;
-  expirationDate: string; // Format: 'MMYY'
-  cardCode: string;
-  amount: number;
-  description?: string;
-  customerEmail?: string;
-}) {
-  return new Promise<{
-    success: boolean;
-    transactionId?: string;
-    message: string;
-    responseCode?: string;
-  }>((resolve) => {
-    try {
-      const merchantAuthenticationType = getMerchantAuthentication();
-
-      // Set up credit card information
-      const creditCard = new APIContracts.CreditCardType();
-      creditCard.setCardNumber(cardNumber);
-      creditCard.setExpirationDate(expirationDate);
-      creditCard.setCardCode(cardCode);
-
-      const paymentType = new APIContracts.PaymentType();
-      paymentType.setCreditCard(creditCard);
-
-      // Create order information
-      const orderDetails = new APIContracts.OrderType();
-      orderDetails.setDescription(description);
-
-      // Set up customer information if provided
-      let customerData;
-      if (customerEmail) {
-        customerData = new APIContracts.CustomerDataType();
-        customerData.setEmail(customerEmail);
-      }
-
-      // Set up the transaction request
-      const transactionRequestType = new APIContracts.TransactionRequestType();
-      transactionRequestType.setTransactionType(
-        APIContracts.TransactionTypeEnum.AUTHCAPTURETRANSACTION
-      );
-      transactionRequestType.setPayment(paymentType);
-      transactionRequestType.setAmount(amount);
-      transactionRequestType.setOrder(orderDetails);
-      if (customerData) {
-        transactionRequestType.setCustomer(customerData);
-      }
-
-      // Create the API request and set the parameters
-      const createRequest = new APIContracts.CreateTransactionRequest();
-      createRequest.setMerchantAuthentication(merchantAuthenticationType);
-      createRequest.setTransactionRequest(transactionRequestType);
-
-      // Call the service
-      const ctrl = new APIControllers.CreateTransactionController(createRequest.getJSON());
-
-      // Set the environment
-      if (authorizeNetConfig.environment === "production") {
-        ctrl.setEnvironment(Constants.endpoint.production);
-      }
-
-      ctrl.execute(() => {
-        const apiResponse = ctrl.getResponse();
-        const response = new APIContracts.CreateTransactionResponse(apiResponse);
-
-        if (response.getMessages().getResultCode() === APIContracts.MessageTypeEnum.OK) {
-          const transactionResponse = response.getTransactionResponse();
-          if (transactionResponse && transactionResponse.getResponseCode() === "1") {
-            resolve({
-              success: true,
-              transactionId: transactionResponse.getTransId(),
-              message: "Transaction approved",
-              responseCode: transactionResponse.getResponseCode(),
-            });
-          } else {
-            let errorMessage = "Transaction failed";
-            if (transactionResponse && transactionResponse.getErrors()) {
-              errorMessage = transactionResponse.getErrors().getError()[0].getErrorText();
-            }
-            resolve({
-              success: false,
-              message: errorMessage,
-              responseCode: transactionResponse?.getResponseCode(),
-            });
-          }
-        } else {
-          let errorMessage = "Transaction failed";
-          const errorMessages = response.getMessages().getMessage();
-          if (errorMessages && errorMessages.length > 0) {
-            errorMessage = errorMessages[0].getText();
-          }
-          resolve({
-            success: false,
-            message: errorMessage,
-          });
-        }
-      });
-    } catch (error) {
-      resolve({
-        success: false,
-        message: error instanceof Error ? error.message : "An unknown error occurred",
-      });
-    }
-  });
-}
-
-/**
- * Create a customer payment profile for future transactions
- */
 export async function createCustomerProfile({
   email,
   description,
-  cardNumber,
-  expirationDate,
-  cardCode,
 }: {
   email: string;
   description?: string;
-  cardNumber: string;
-  expirationDate: string;
-  cardCode: string;
 }) {
-  return new Promise<{
-    success: boolean;
-    customerProfileId?: string;
-    customerPaymentProfileId?: string;
-    message: string;
-  }>((resolve) => {
+  return new Promise<string>((resolve, reject) => {
     try {
       const merchantAuthenticationType = getMerchantAuthentication();
-
-      // Set up credit card information
-      const creditCard = new APIContracts.CreditCardType();
-      creditCard.setCardNumber(cardNumber);
-      creditCard.setExpirationDate(expirationDate);
-      creditCard.setCardCode(cardCode);
-
-      const paymentType = new APIContracts.PaymentType();
-      paymentType.setCreditCard(creditCard);
-
-      // Create payment profile
-      const paymentProfile = new APIContracts.CustomerPaymentProfileType();
-      paymentProfile.setPayment(paymentType);
 
       // Create customer profile
       const customerProfile = new APIContracts.CustomerProfileType();
       customerProfile.setEmail(email);
       customerProfile.setDescription(description || `Customer profile for ${email}`);
-      customerProfile.setPaymentProfiles([paymentProfile]);
 
       // Create the API request and set the parameters
       const createRequest = new APIContracts.CreateCustomerProfileRequest();
@@ -190,32 +45,98 @@ export async function createCustomerProfile({
         const response = new APIContracts.CreateCustomerProfileResponse(apiResponse);
 
         if (response.getMessages().getResultCode() === APIContracts.MessageTypeEnum.OK) {
-          resolve({
-            success: true,
-            customerProfileId: response.getCustomerProfileId(),
-            customerPaymentProfileId: response
-              .getCustomerPaymentProfileIdList()
-              .getNumericString()[0],
-            message: "Customer profile created successfully",
-          });
+          resolve(response.getCustomerProfileId());
         } else {
-          let errorMessage = "Failed to create customer profile";
           const errorMessages = response.getMessages().getMessage();
-          if (errorMessages && errorMessages.length > 0) {
-            errorMessage = errorMessages[0].getText();
-          }
-          resolve({
-            success: false,
-            message: errorMessage,
-          });
+          const errorMessage =
+            errorMessages && errorMessages.length > 0
+              ? errorMessages[0].getText()
+              : "Failed to create customer profile";
+
+          reject(new Error(errorMessage));
         }
       });
     } catch (error) {
-      resolve({
-        success: false,
-        message: error instanceof Error ? error.message : "An unknown error occurred",
-      });
+      reject(error);
     }
+  });
+}
+
+// Add this helper function to lookup existing profiles
+export async function getCustomerProfileIdByEmail(email: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const merchantAuthenticationType = getMerchantAuthentication();
+
+    // Create request to get customer profile IDs
+    const getRequest = new APIContracts.GetCustomerProfileIdsRequest();
+    getRequest.setMerchantAuthentication(merchantAuthenticationType);
+
+    const ctrl = new APIControllers.GetCustomerProfileIdsController(getRequest.getJSON());
+
+    if (authorizeNetConfig.environment === "production") {
+      ctrl.setEnvironment(Constants.endpoint.production);
+    }
+
+    ctrl.execute(() => {
+      const response = new APIContracts.GetCustomerProfileIdsResponse(ctrl.getResponse());
+
+      if (response.getMessages().getResultCode() === APIContracts.MessageTypeEnum.OK) {
+        const profileIds = response.getIds().getNumericString();
+
+        if (!profileIds || profileIds.length === 0) {
+          reject(new Error("No customer profiles found"));
+          return;
+        }
+
+        // Now we need to check each profile to find the one with matching email
+        findProfileWithEmail(profileIds, email)
+          .then((matchingProfileId) => resolve(matchingProfileId))
+          .catch((err) => reject(err));
+      } else {
+        reject(new Error("Failed to retrieve customer profile IDs"));
+      }
+    });
+  });
+}
+
+async function findProfileWithEmail(profileIds: string[], email: string): Promise<string> {
+  // This checks each profile ID until it finds the one with the matching email
+  for (const profileId of profileIds) {
+    const profile = await getCustomerProfile(profileId);
+    if (profile.email === email) {
+      return profileId;
+    }
+  }
+
+  throw new Error(`No profile found with email: ${email}`);
+}
+
+async function getCustomerProfile(profileId: string): Promise<{ email: string }> {
+  return new Promise((resolve, reject) => {
+    const merchantAuthenticationType = getMerchantAuthentication();
+
+    const getRequest = new APIContracts.GetCustomerProfileRequest();
+    getRequest.setMerchantAuthentication(merchantAuthenticationType);
+    getRequest.setCustomerProfileId(profileId);
+
+    const ctrl = new APIControllers.GetCustomerProfileController(getRequest.getJSON());
+
+    if (authorizeNetConfig.environment === "production") {
+      ctrl.setEnvironment(Constants.endpoint.production);
+    }
+
+    ctrl.execute(() => {
+      const response = new APIContracts.GetCustomerProfileResponse(ctrl.getResponse());
+
+      if (response.getMessages().getResultCode() === APIContracts.MessageTypeEnum.OK) {
+        const profile = response.getProfile();
+        resolve({
+          email: profile.getEmail(),
+        });
+      } else {
+        reject(new Error("Failed to retrieve customer profile"));
+      }
+    });
   });
 }
 
@@ -244,11 +165,9 @@ export async function addCreditCardToCustomerProfile({
     phoneNumber?: string;
   };
 }) {
-  return new Promise<{
-    success: boolean;
-    customerPaymentProfileId?: string;
-    message: string;
-  }>((resolve) => {
+  console.log(cardNumber, expirationDate, cardCode, billTo);
+
+  return new Promise<string>((resolve, reject) => {
     try {
       const merchantAuthenticationType = getMerchantAuthentication();
 
@@ -302,28 +221,47 @@ export async function addCreditCardToCustomerProfile({
         const response = new APIContracts.CreateCustomerPaymentProfileResponse(apiResponse);
 
         if (response.getMessages().getResultCode() === APIContracts.MessageTypeEnum.OK) {
-          resolve({
-            success: true,
-            customerPaymentProfileId: response.getCustomerPaymentProfileId(),
-            message: "Credit card added successfully",
-          });
+          resolve(response.getCustomerPaymentProfileId());
         } else {
           let errorMessage = "Failed to add credit card";
           const errorMessages = response.getMessages().getMessage();
           if (errorMessages && errorMessages.length > 0) {
             errorMessage = errorMessages[0].getText();
           }
-          resolve({
-            success: false,
-            message: errorMessage,
-          });
+          reject(new Error(errorMessage));
         }
       });
     } catch (error) {
-      resolve({
-        success: false,
-        message: error instanceof Error ? error.message : "An unknown error occurred",
-      });
+      reject(error);
     }
+  });
+}
+
+export async function getCustomerPaymentProfiles(customerProfileId: string) {
+  return new Promise<APIContracts.CustomerPaymentProfileMaskedType[]>((resolve, reject) => {
+    const merchantAuthenticationType = getMerchantAuthentication();
+
+    // Use GetCustomerProfileRequest instead
+    const getRequest = new APIContracts.GetCustomerProfileRequest();
+    getRequest.setMerchantAuthentication(merchantAuthenticationType);
+    getRequest.setCustomerProfileId(customerProfileId);
+
+    const ctrl = new APIControllers.GetCustomerProfileController(getRequest.getJSON());
+
+    if (authorizeNetConfig.environment === "production") {
+      ctrl.setEnvironment(Constants.endpoint.production);
+    }
+
+    ctrl.execute(() => {
+      const response = new APIContracts.GetCustomerProfileResponse(ctrl.getResponse());
+
+      if (response.getMessages().getResultCode() === APIContracts.MessageTypeEnum.OK) {
+        const profile = response.getProfile();
+        const paymentProfiles = profile.getPaymentProfiles();
+        resolve(paymentProfiles || []);
+      } else {
+        reject(new Error("Failed to retrieve customer payment profiles"));
+      }
+    });
   });
 }
