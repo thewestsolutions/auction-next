@@ -50,7 +50,7 @@ export default function BidPanel({ item, history, userId }: BidPanelProps) {
           setBidHistory((prev) => [payload.new as BidHistory, ...prev]);
         }
       )
-      .subscribe();
+      .subscribe(console.log);
 
     return () => {
       supabase.removeChannel(channel);

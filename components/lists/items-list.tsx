@@ -8,6 +8,7 @@ import Pagination from "@/components/display/pagination";
 import { getItems } from "@/lib/db-items";
 import { useSearchParams } from "next/navigation";
 import { ITEMS_PER_PAGE } from "@/lib/config";
+import { useBidding } from "@/lib/hooks/use-bidding";
 
 interface ItemsListProps {
   items: Item[];
@@ -29,6 +30,12 @@ export default function ItemsList({
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
   const [totalCount, setTotalCount] = useState(defaultCount);
   const supabase = createClient();
+
+  const { placeBid } = useBidding({
+    onUpdate: (item) => {
+      setItems((prevItems) => prevItems.map((i) => (i.id === item.id ? item : i)));
+    },
+  });
 
   const fetchItems = async (page: number) => {
     try {
@@ -52,34 +59,6 @@ export default function ItemsList({
       console.error("Error fetching items:", error);
     }
   };
-
-  const handleBid = async (item: Item) => {
-    const amount = item.price_bid + 5;
-
-    await supabase.from("items").update({ price_bid: amount }).eq("id", item.id);
-
-    await supabase.from("bid_history").insert({
-      item_id: item.id,
-      user_id: (await supabase.auth.getUser()).data.user?.id,
-      amount: amount,
-    });
-  };
-
-  useEffect(() => {
-    const channel = supabase
-      .channel("items")
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "items" }, (payload) => {
-        const updatedItem = payload.new as Item;
-        setItems((prevItems) =>
-          prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
-        );
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase]);
 
   // Update URL when page changes
   useEffect(() => {
@@ -112,7 +91,7 @@ export default function ItemsList({
             retailPrice={item.price_retail}
             discountPercentage={0}
             timeLeft={item.expires_at}
-            onBid={() => handleBid(item)}
+            onBid={async (price) => await placeBid(item.id, price)}
           />
         ))}
       </div>

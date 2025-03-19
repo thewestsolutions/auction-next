@@ -2,6 +2,7 @@ import ItemsList from "@/components/lists/items-list";
 import { getItems } from "@/lib/db-items";
 import { createClient } from "@/lib/supabase-server";
 import { ITEMS_PER_PAGE } from "@/lib/config";
+
 export default async function HomePage() {
   const supabase = await createClient();
   const { data: items, error, count } = await getItems(supabase, {});

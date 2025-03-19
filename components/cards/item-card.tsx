@@ -4,9 +4,11 @@ import Image from "next/image";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Clock, Tag } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import Timer from "../display/timer";
+import { getNextBidPrice } from "@/lib/bidding";
+import { isDateExpired } from "@/lib/date";
 
 interface ItemCardProps {
   id: number;
@@ -16,7 +18,7 @@ interface ItemCardProps {
   retailPrice: number;
   discountPercentage: number;
   timeLeft: string;
-  onBid?: () => void;
+  onBid: (price: number) => void;
 }
 
 export default function ItemCard({
@@ -29,15 +31,18 @@ export default function ItemCard({
   timeLeft,
   onBid,
 }: ItemCardProps) {
-  // Initial parsing
-  const [isExpired, setIsExpired] = useState(false);
+  const [isExpired, setIsExpired] = useState(isDateExpired(timeLeft));
+  const [nextBid, setNextBid] = useState(getNextBidPrice(price));
+
+  useEffect(() => {
+    setNextBid(getNextBidPrice(price));
+  }, [price]);
 
   return (
     <Card className="flex h-full flex-col gap-0 overflow-hidden py-0 shadow-none">
       <CardHeader className="p-1">
         <Link href={`/item/${id}`}>
           <div className="relative">
-            {/* Time left indicator */}
             <div
               className={`absolute top-1 left-1 z-10 rounded-md ${isExpired ? "bg-gray-100 text-gray-600" : "border border-red-200 bg-red-100 text-red-600"} px-1 py-0.5 text-xs`}
             >
@@ -47,7 +52,6 @@ export default function ItemCard({
               </span>
             </div>
 
-            {/* Item image */}
             <div className="relative h-64 w-full">
               <Image
                 src={imageUrl}
@@ -77,9 +81,10 @@ export default function ItemCard({
       <CardFooter className="mt-auto px-2 pt-0 pb-4">
         <Button
           className="w-full cursor-pointer bg-amber-300 text-amber-900 hover:bg-amber-400"
-          onClick={onBid}
+          onClick={() => onBid(nextBid)}
+          disabled={isExpired}
         >
-          {`Bid $${price.toFixed(2)}`}
+          {`Bid $${nextBid}`}
         </Button>
       </CardFooter>
     </Card>

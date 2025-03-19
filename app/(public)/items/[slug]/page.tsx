@@ -17,7 +17,11 @@ export default async function Page({ params }: Props) {
     notFound();
   }
 
-  const { data: items, error: itemsError } = await getItems(supabase, {
+  const {
+    data: items,
+    error: itemsError,
+    count,
+  } = await getItems(supabase, {
     categoryId: category.id,
   });
 
@@ -28,7 +32,7 @@ export default async function Page({ params }: Props) {
   return (
     <div className="container">
       <h1 className="mb-6 text-3xl font-bold">{category.title}</h1>
-      <ItemsList items={items ?? []} categoryId={category.id} />
+      <ItemsList items={items ?? []} categoryId={category.id} count={count ?? 0} />
     </div>
   );
 }
