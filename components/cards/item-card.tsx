@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import Timer from "../display/timer";
-import { getNextBidPrice } from "@/lib/bidding";
-import { isDateExpired } from "@/lib/date";
+import { getNextBidPrice } from "@/src/lib/bidding";
+import { isDateExpired } from "@/src/lib/date";
 
 interface ItemCardProps {
   id: number;

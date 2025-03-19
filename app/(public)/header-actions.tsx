@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogoutButton } from "@/components/logout-button";
-import { createClient } from "@/lib/supabase-browser";
+import { createClient } from "@/src/lib/supabase-browser";
 import { Bell, SquareMenu } from "lucide-react";
 
 interface HeaderActionsProps {

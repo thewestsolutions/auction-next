@@ -1,12 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { addFavorite, removeFavorite } from "@/lib/db-items";
+import { addFavorite, removeFavorite } from "@/src/lib/db-items";
 import { Heart } from "lucide-react";
 import { useState } from "react";
-import { createClient } from "@/lib/supabase-browser";
+import { createClient } from "@/src/lib/supabase-browser";
 import { redirect } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn } from "@/src/lib/utils";
 interface FavoriteButtonProps {
   itemId: number;
   isFavorite: boolean;

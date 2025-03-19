@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FacebookIcon, Flame, Hammer, Heart, Instagram, List, Trophy } from "lucide-react";
 import { HeaderActions } from "./header-actions";
-import { createClient } from "@/lib/supabase-server";
+import { createClient } from "@/src/lib/supabase-server";
 import { Toaster } from "@/components/ui/sonner";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {

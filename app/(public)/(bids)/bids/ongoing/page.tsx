@@ -1,5 +1,5 @@
 import ItemsList from "@/components/lists/items-list";
-import { createClient } from "@/lib/supabase-server";
+import { createClient } from "@/src/lib/supabase-server";
 import { redirect } from "next/navigation";
 
 export default async function OngoingBids() {

@@ -1,8 +1,8 @@
-import { createClient } from "@/lib/supabase-server";
+import { createClient } from "@/src/lib/supabase-server";
 import { notFound } from "next/navigation";
 import ItemsList from "@/components/lists/items-list";
-import { getItems } from "@/lib/db-items";
-import { getCategoryBySlug } from "@/lib/db-categories";
+import { getItems } from "@/src/lib/db-items";
+import { getCategoryBySlug } from "@/src/lib/db-categories";
 interface Props {
   params: Promise<{ slug: string }>;
 }

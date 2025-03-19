@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase-browser";
+import { createClient } from "@/src/lib/supabase-browser";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({

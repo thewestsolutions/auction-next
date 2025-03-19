@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormMessage } from "@/components/ui/form";
 import { useState } from "react";
-import { createClient } from "@/lib/supabase-browser";
+import { createClient } from "@/src/lib/supabase-browser";
 import { toast } from "sonner";
 
 interface Props {

@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import ItemCard from "../cards/item-card";
 import { Item } from "@/types/supabase";
-import { createClient } from "@/lib/supabase-browser";
+import { createClient } from "@/src/lib/supabase-browser";
 import Pagination from "@/components/display/pagination";
-import { getItems } from "@/lib/db-items";
+import { getItems } from "@/src/lib/db-items";
 import { useSearchParams } from "next/navigation";
-import { ITEMS_PER_PAGE } from "@/lib/config";
-import { useBidding } from "@/lib/hooks/use-bidding";
+import { ITEMS_PER_PAGE } from "@/src/lib/config";
+import { useBidding } from "@/src/lib/hooks/use-bidding";
 
 interface ItemsListProps {
   items: Item[];
@@ -33,7 +33,9 @@ export default function ItemsList({
 
   const { placeBid } = useBidding({
     onUpdate: (item) => {
-      setItems((prevItems) => prevItems.map((i) => (i.id === item.id ? item : i)));
+      setItems((prevItems) =>
+        prevItems.map((i) => (i.id === item.id ? { ...i, price_bid: item.amount } : i))
+      );
     },
   });
 

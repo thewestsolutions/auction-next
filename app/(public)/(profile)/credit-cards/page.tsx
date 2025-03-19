@@ -5,8 +5,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCustomerPaymentProfiles } from "@/lib/authorize-net";
-import { createClient } from "@/lib/supabase-server";
+import { getCustomerPaymentProfiles } from "@/src/lib/authorize-net";
+import { createClient } from "@/src/lib/supabase-server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
