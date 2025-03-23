@@ -50,13 +50,19 @@ export default async function ItemPage({ params }: ItemPageProps) {
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
+
           <BreadcrumbSeparator />
+
           <BreadcrumbItem>
             <BreadcrumbLink href="/components">{category.title}</BreadcrumbLink>
           </BreadcrumbItem>
+
           <BreadcrumbSeparator />
+
           <BreadcrumbItem>
-            <BreadcrumbPage>{item.title}</BreadcrumbPage>
+            <BreadcrumbPage>
+              {item.title.length > 50 ? item.title.slice(0, 50) + "..." : item.title}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

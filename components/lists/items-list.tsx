@@ -32,7 +32,7 @@ export default function ItemsList({
   const supabase = createClient();
 
   const { placeBid } = useBidding({
-    onUpdate: (item) => {
+    onBid: (item) => {
       setItems((prevItems) =>
         prevItems.map((i) => (i.id === item.id ? { ...i, price_bid: item.amount } : i))
       );

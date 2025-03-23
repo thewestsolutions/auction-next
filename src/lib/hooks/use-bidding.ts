@@ -1,10 +1,21 @@
+import { Item } from "@/types/supabase";
 import { useEffect } from "react";
 import { createClient } from "@/src/lib/supabase-browser";
 
+type BidResponse = {
+  id: number;
+  amount: number;
+  history?: {
+    user_id: string;
+    amount: number;
+  }[];
+};
 export function useBidding({
-  onUpdate,
+  onBid: onUpdate,
+  loadHistory = false,
 }: {
-  onUpdate?: (payload: { id: number; amount: number }) => void;
+  onBid?: (payload: BidResponse) => void;
+  loadHistory?: boolean;
 }) {
   const supabase = createClient();
 
@@ -16,15 +27,29 @@ export function useBidding({
     });
 
     channel
-      .on<{ id: number; amount: number }>("broadcast", { event: "bid-placed" }, (payload) => {
-        onUpdate?.(payload.payload);
+      .on<{ id: number; amount: number }>("broadcast", { event: "bid-placed" }, async (payload) => {
+        const response: BidResponse = {
+          id: payload.payload.id,
+          amount: payload.payload.amount,
+        };
+
+        if (loadHistory) {
+          const { data } = await supabase
+            .from("bid_history")
+            .select("*")
+            .eq("item_id", payload.payload.id);
+
+          response.history = data || [];
+        }
+
+        onUpdate?.(response);
       })
       .subscribe(console.log);
 
     return () => {
       channel.unsubscribe();
     };
-  }, [supabase, onUpdate]);
+  }, [supabase, onUpdate, loadHistory]);
 
   async function placeBid(id: number, amount: number) {
     await supabase.from("items").update({ price_bid: amount }).eq("id", id);

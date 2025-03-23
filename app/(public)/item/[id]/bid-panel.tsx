@@ -12,6 +12,10 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { useBidding } from "@/src/lib/hooks/use-bidding";
+import { getNextBidPrice } from "@/src/lib/bidding";
+import { useRouter } from "next/navigation";
+
 interface BidPanelProps {
   item: Item;
   history: BidHistory[];
@@ -19,43 +23,29 @@ interface BidPanelProps {
 }
 
 export default function BidPanel({ item, history, userId }: BidPanelProps) {
-  const supabase = createClient();
+  const router = useRouter();
   const [bid, setBid] = useState(item.price_bid);
+  const [nextBid, setNextBid] = useState(getNextBidPrice(bid));
   const [bidHistory, setBidHistory] = useState<BidHistory[]>(history);
+  const { placeBid } = useBidding({
+    onBid: (payload) => {
+      console.log(payload);
+      setBid(payload.amount);
+    },
+    loadHistory: true,
+  });
 
   const handleBid = async () => {
     if (!userId) {
-      alert("Please login to bid");
+      router.push("/auth/login");
       return;
     }
 
-    const { data, error } = await addBid(supabase, item.id, userId, bid + 10);
+    await placeBid(item.id, nextBid);
 
-    if (error) {
-      alert("Error adding bid");
-      return;
-    }
-
-    setBid(data?.price_bid || 0);
+    setBid(nextBid);
+    setNextBid(getNextBidPrice(nextBid));
   };
-
-  useEffect(() => {
-    const channel = supabase.channel("bid_history");
-
-    channel
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "bid_history" },
-        (payload) => {
-          setBidHistory((prev) => [payload.new as BidHistory, ...prev]);
-        }
-      )
-      .subscribe(console.log);
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [history, supabase]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -70,7 +60,7 @@ export default function BidPanel({ item, history, userId }: BidPanelProps) {
         </CardContent>
         <CardFooter>
           <Button className="w-full" variant={"primary"} onClick={handleBid}>
-            Bid ${bid + 10}
+            Bid ${nextBid}
           </Button>
         </CardFooter>
       </Card>

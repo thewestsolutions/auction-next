@@ -21,17 +21,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  transpilePackages: [
-    "@supabase/ssr",
-    "@supabase/supabase-js",
-    "@supabase/auth-helpers-shared",
-    "@supabase/auth-helpers-nextjs",
-    "@supabase/functions-js",
-    "@supabase/storage-js",
-    "@supabase/postgrest-js",
-    "@supabase/gotrue-js",
-    "@supabase/realtime-js",
-  ],
   devIndicators: false,
 };
 
