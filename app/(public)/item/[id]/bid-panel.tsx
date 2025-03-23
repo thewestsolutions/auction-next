@@ -3,9 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { BidHistory, Item } from "@/types/supabase";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useState, useEffect } from "react";
-import { addBid } from "@/src/lib/db-items";
-import { createClient } from "@/src/lib/supabase-browser";
+import { useState } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -31,6 +29,7 @@ export default function BidPanel({ item, history, userId }: BidPanelProps) {
     onBid: (payload) => {
       console.log(payload);
       setBid(payload.amount);
+      setBidHistory(payload.history || []);
     },
     loadHistory: true,
   });

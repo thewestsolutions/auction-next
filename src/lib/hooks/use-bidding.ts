@@ -1,15 +1,15 @@
-import { Item } from "@/types/supabase";
 import { useEffect } from "react";
 import { createClient } from "@/src/lib/supabase-browser";
+import { BidHistory } from "@/types/supabase";
 
 type BidResponse = {
   id: number;
   amount: number;
-  history?: {
-    user_id: string;
-    amount: number;
-  }[];
+  history?: BidHistory[];
 };
+
+// Make sure to unsubscribe to all channels or create the core channel
+
 export function useBidding({
   onBid: onUpdate,
   loadHistory = false,
@@ -37,6 +37,7 @@ export function useBidding({
           const { data } = await supabase
             .from("bid_history")
             .select("*")
+            .order("created_at", { ascending: false })
             .eq("item_id", payload.payload.id);
 
           response.history = data || [];
