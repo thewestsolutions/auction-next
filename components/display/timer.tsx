@@ -9,13 +9,13 @@ export default function Timer({
   timeLeft: string;
   onExpired?: (isExpired: boolean) => void;
 }) {
+  const [remainingTime, setRemainingTime] = useState<string>("");
+
   // Calculate seconds remaining from ISO date string
   const calculateTimeRemaining = (endTimeStr: string): number => {
     const endTime = new Date(endTimeStr).getTime();
     const now = new Date().getTime();
     const diff = endTime - now;
-
-    // Return seconds remaining (or 0 if expired)
     return Math.max(0, Math.floor(diff / 1000));
   };
 
@@ -54,38 +54,30 @@ export default function Timer({
     return result.trim();
   };
 
-  // Initial calculation
-  const initialSeconds = calculateTimeRemaining(timeLeft);
-  const initialTimeDisplay = initialSeconds <= 0 ? "Expired" : formatTimeString(initialSeconds);
-
-  const [remainingTime, setRemainingTime] = useState(initialTimeDisplay);
-
   useEffect(() => {
-    // Set the initial time display immediately
-    if (initialSeconds <= 0) {
-      setRemainingTime("Expired");
-      onExpired?.(true);
-    } else {
-      setRemainingTime(formatTimeString(initialSeconds));
-      onExpired?.(false);
-    }
-
-    // Update the timer every second
-    const timer = setInterval(() => {
+    // Initial calculation
+    const updateTimer = () => {
       const secondsLeft = calculateTimeRemaining(timeLeft);
-
       if (secondsLeft <= 0) {
-        clearInterval(timer);
         setRemainingTime("Expired");
         onExpired?.(true);
       } else {
         setRemainingTime(formatTimeString(secondsLeft));
         onExpired?.(false);
       }
-    }, 1000);
+    };
+
+    // Set initial state
+    updateTimer();
+
+    // Update the timer every second
+    const timer = setInterval(updateTimer, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, onExpired, initialSeconds]);
+  }, [timeLeft, onExpired]);
+
+  // Show nothing during SSR
+  if (typeof window === "undefined") return null;
 
   return remainingTime;
 }
