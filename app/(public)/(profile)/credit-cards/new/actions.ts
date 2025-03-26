@@ -1,6 +1,6 @@
 "use server";
 
-import { addCreditCardToCustomerProfile } from "@/src/lib/authorize-net";
+import { addCreditCardToCustomerProfile } from "@/lib/authorize-net";
 
 export async function addCreditCard({
   customerProfileId,

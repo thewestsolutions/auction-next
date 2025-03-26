@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/src/lib/supabase-server";
-import { getBidHistory, getItemById, isFavorite } from "@/src/lib/db-items";
-import { getCategoryById } from "@/src/lib/db-categories";
+import { createClient } from "@/lib/supabase-server";
+import { getBidHistory, getItemById, isFavorite } from "@/lib/db-items";
+import { getCategoryById } from "@/lib/db-categories";
 import { Search } from "lucide-react";
 import {
   Breadcrumb,

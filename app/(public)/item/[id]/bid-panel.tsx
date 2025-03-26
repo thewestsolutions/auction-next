@@ -10,8 +10,8 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import { useBidding } from "@/src/lib/hooks/use-bidding";
-import { getNextBidPrice } from "@/src/lib/bidding";
+import { useBidding } from "@/lib/hooks/use-bidding";
+import { getNextBidPrice } from "@/lib/bidding";
 import { useRouter } from "next/navigation";
 
 interface BidPanelProps {

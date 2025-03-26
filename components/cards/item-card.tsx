@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import Timer from "../display/timer";
-import { getNextBidPrice } from "@/src/lib/bidding";
-import { isDateExpired } from "@/src/lib/date";
+import { getNextBidPrice } from "@/lib/bidding";
+import { isDateExpired } from "@/lib/date";
 
 interface ItemCardProps {
   id: number;
@@ -19,6 +19,7 @@ interface ItemCardProps {
   discountPercentage: number;
   timeLeft: string;
   onBid: (price: number) => void;
+  isWinning: boolean; // Added property to show if it is winning
 }
 
 export default function ItemCard({
@@ -30,6 +31,7 @@ export default function ItemCard({
   discountPercentage,
   timeLeft,
   onBid,
+  isWinning, // Destructure the new property
 }: ItemCardProps) {
   const [isExpired, setIsExpired] = useState(isDateExpired(timeLeft));
   const [nextBid, setNextBid] = useState(getNextBidPrice(price));
@@ -43,13 +45,21 @@ export default function ItemCard({
       <CardHeader className="p-1">
         <Link href={`/item/${id}`}>
           <div className="relative">
-            <div
-              className={`absolute top-1 left-1 z-10 rounded-md ${isExpired ? "bg-gray-100 text-gray-600" : "border border-red-200 bg-red-100 text-red-600"} px-1 py-0.5 text-xs`}
-            >
-              <span className="flex items-center gap-1">
-                <Clock size={16} />
-                <Timer timeLeft={timeLeft} onExpired={setIsExpired} />
-              </span>
+            <div className="absolute z-10 flex w-full items-center justify-between gap-1">
+              <div
+                className={`rounded-md ${isExpired ? "bg-gray-100 text-gray-600" : "border border-red-200 bg-red-100 text-red-600"} px-1 py-0.5 text-xs`}
+              >
+                <span className="flex items-center gap-1">
+                  <Clock size={16} />
+                  <Timer timeLeft={timeLeft} onExpired={setIsExpired} />
+                </span>
+              </div>
+
+              {isWinning && ( // Conditional rendering for winning badge
+                <span className="rounded-md bg-green-100 px-2 py-0.5 text-xs text-green-600">
+                  Is Winning
+                </span>
+              )}
             </div>
 
             <div className="relative h-64 w-full">
@@ -82,7 +92,7 @@ export default function ItemCard({
         <Button
           className="w-full cursor-pointer bg-amber-300 text-amber-900 hover:bg-amber-400"
           onClick={() => onBid(nextBid)}
-          disabled={isExpired}
+          disabled={isExpired || isWinning}
         >
           {`Bid $${nextBid}`}
         </Button>

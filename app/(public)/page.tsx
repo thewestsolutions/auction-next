@@ -1,7 +1,7 @@
 import ItemsList from "@/components/lists/items-list";
-import { getItems } from "@/src/lib/db-items";
-import { createClient } from "@/src/lib/supabase-server";
-import { ITEMS_PER_PAGE } from "@/src/lib/config";
+import { getItems } from "@/lib/db-items";
+import { createClient } from "@/lib/supabase-server";
+import { ITEMS_PER_PAGE } from "@/lib/config";
 
 export default async function HomePage() {
   const supabase = await createClient();

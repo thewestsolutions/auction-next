@@ -1,5 +1,5 @@
-import { createClient } from "@/src/lib/supabase-server";
-import { createCustomerProfile, getCustomerProfileIdByEmail } from "@/src/lib/authorize-net";
+import { createClient } from "@/lib/supabase-server";
+import { createCustomerProfile, getCustomerProfileIdByEmail } from "@/lib/authorize-net";
 import PageClient from "./page-client";
 import { redirect } from "next/navigation";
 import {

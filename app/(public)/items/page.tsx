@@ -1,6 +1,6 @@
 import ItemsList from "@/components/lists/items-list";
-import { getItems } from "@/src/lib/db-items";
-import { createClient } from "@/src/lib/supabase-server";
+import { getItems } from "@/lib/db-items";
+import { createClient } from "@/lib/supabase-server";
 
 export default async function ItemsPage() {
   const supabase = await createClient();

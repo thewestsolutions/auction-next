@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { createClient } from "@/src/lib/supabase-browser";
+import { createClient } from "@/lib/supabase-browser";
 import { BidHistory } from "@/types/supabase";
 
 type BidResponse = {
@@ -53,10 +53,22 @@ export function useBidding({
   }, [supabase, onUpdate, loadHistory]);
 
   async function placeBid(id: number, amount: number) {
-    await supabase.from("items").update({ price_bid: amount }).eq("id", id);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await supabase
+      .from("items")
+      .update({ price_bid: amount, winner_user_id: user.id })
+      .eq("id", id);
+
     await supabase.from("bid_history").insert({
       item_id: id,
-      user_id: (await supabase.auth.getUser()).data.user?.id,
+      user_id: user.id,
       amount,
     });
 

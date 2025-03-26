@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@/src/lib/supabase-browser";
+import { createClient } from "@/lib/supabase-browser";
 import { DropdownMenuItem } from "./ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 
